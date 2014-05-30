@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A5C85A76-1E05-46F9-BB40-B20A63F8BF73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PFE.DAL</RootNamespace>
+    <AssemblyName>PFE.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\AnnonceConfiguration.cs" />
+    <Compile Include="Configuration\ApprenantConfiguration.cs" />
+    <Compile Include="Configuration\ExamenConfiguration.cs" />
+    <Compile Include="Configuration\FormationConfiguration.cs" />
+    <Compile Include="Configuration\FormationExamenConfiguration.cs" />
+    <Compile Include="Configuration\HistoriqueApprenantConfiguration.cs" />
+    <Compile Include="Configuration\HistoriqueFormationConfiguration.cs" />
+    <Compile Include="Configuration\ImageConfiguration.cs" />
+    <Compile Include="Configuration\NiveauExpertiseConfiguration.cs" />
+    <Compile Include="Configuration\ProfilConfiguration.cs" />
+    <Compile Include="Configuration\QuestionConfiguration.cs" />
+    <Compile Include="Configuration\ReponseConfiguration.cs" />
+    <Compile Include="Configuration\ResultatConfiguration.cs" />
+    <Compile Include="Infrastructure\DatabaseFactory.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
+    <Compile Include="Infrastructure\IDatabaseFactory.cs" />
+    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Infrastructure\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Page.cs" />
+    <Compile Include="Infrastructure\RepositoryBase.cs" />
+    <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="DBPFEContext.cs" />
+    <Compile Include="Migrations\201405282240560_INI.cs" />
+    <Compile Include="Migrations\201405282240560_INI.Designer.cs">
+      <DependentUpon>201405282240560_INI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AnnonceRepository.cs" />
+    <Compile Include="Repository\ApprenantRepository.cs" />
+    <Compile Include="Repository\ExamenRepository.cs" />
+    <Compile Include="Repository\FormationExamenRepository.cs" />
+    <Compile Include="Repository\FormationRepository.cs" />
+    <Compile Include="Repository\HistoriqueApprenantRepository.cs" />
+    <Compile Include="Repository\HistoriqueFormationRepository.cs" />
+    <Compile Include="Repository\ImageRepository.cs" />
+    <Compile Include="Repository\NiveauExpertiseRepository.cs" />
+    <Compile Include="Repository\ProfilRepository.cs" />
+    <Compile Include="Repository\QuestionRepository.cs" />
+    <Compile Include="Repository\ReponseRepository.cs" />
+    <Compile Include="Repository\ResultatRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PFE.Domain\PFE.Domain.csproj">
+      <Project>{bf6a7d93-44f5-49a1-bca9-a0d950be1ff6}</Project>
+      <Name>PFE.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405282240560_INI.resx">
+      <DependentUpon>201405282240560_INI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

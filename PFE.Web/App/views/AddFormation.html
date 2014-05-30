@@ -1,0 +1,194 @@
+﻿
+<div class="col-md-6">
+    <h2 data-bind="text: title"></h2>
+    <form class="panel">
+        
+            <!--Titre-->
+            <div class="form-inline">
+                <label for="Titre">Titre :</label>
+                <input data-bind="value: Titre" type="text" name="Titre" class="form-control" />
+            </div>
+            
+            <!--Nom Organisme-->
+            <div class="form-group">
+                <label for="nomOrganisme">Nom Organisme :</label>
+                <input data-bind="value: NomOrganisme" type="text" name="nomOrganisme" class="form-control" placeholder="e.g emsi" />
+            </div>
+
+            <!--Description-->
+            <div class="form-group">
+                <label for="Description">Description :</label>
+                <input data-bind="value: Description" type="text" name="Description" class="form-control" />
+            </div>
+
+            <!--Date de début-->
+            <div class="form-group">
+                <label for="DateDebut">date de debut :</label>
+                <input data-bind="value: DateDebut" type="date" name="DateDebut" class="form-control" />
+            </div>
+
+            <!--Date de Fin-->
+            <div class="form-group">
+                <label for="DateFin">date de fin :</label>
+                <input data-bind="value: DateFin" type="date" name="DateFin" class="form-control" />
+            </div>
+
+            <div class="btn-group">
+                <p class="tpbutton btn-toolbar" style="text-align:center">
+                    <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
+                       data-toggle="modal" data-target="#Gestion">Gestion des examens</a>
+                    <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
+                       data-toggle="modal" data-target="#Profile">Gestion de Profile</a>
+                </p>
+            </div>
+            <div class="btn-group container">
+                <p class="tpbutton btn-toolbar" style="text-align:center">
+                    <a class="btn navbar-btn btn-primary btn-success" data-bind="click: Add">Ajouter</a>
+                    <a class="btn navbar-btn btn-default btn-danger" href="#" target="_texturepack">Annuler</a>
+                </p>
+            </div>
+    </form>
+</div>
+
+<!--pop-up Gestion des examens-->
+<div class="modal fade" id="Gestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!--#region header  -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-bind="click: Dismiss" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">gestion des examens</h4>
+            </div>
+            <!--#endregion -->
+            <!--#region body  -->
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <p>
+                            <label for="Titre">Catégories :</label>
+                            <select data-bind="options: Categorie, value:selectedCategorie"></select>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label for="Titre">examens :</label>
+                            <select data-bind="options:listExamen,optionsText:'titre', value:selectedExamen "></select>
+                        </p>
+
+                    <div class="form-group">
+                        <p>
+                            <label for="Titre">Nombre Apprenants :</label>
+                            <input data-bind="value:NombreApprenant" />
+                        </p>
+                    </div>
+            </div>
+
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bind="click: AddToPanel">Add</button>
+               </div>
+
+                    <div>
+                        <table class="table-bordered table-responsive table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Categorie</th>
+                                    <th>Examen</th>
+                                    <th>Nombre Apprenant</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: StockListChoix">
+                                <tr>
+                                    <td data-bind="text: categorie"></td>
+                                    <td data-bind="text: examen"></td>
+                                    <td data-bind="text: nombreApprenant"></td>
+                                    <td><button class="close" data-bind="click: $root.deleteFromList, value:$root.StockListChoix() ">&times;</button></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: Dismiss">Close</button>
+                        <button type="button" class="btn btn-primary" data-bind="click: StockList">Save changes</button>
+                    </div>
+
+            </form>
+        </div>
+            <!--#endregion -->
+            <!--#region footer  -->
+           
+            <!--#endregion -->
+        </div>
+    </div>
+</div>
+
+
+<!--pop-up Gestion de profil-->
+<div class="modal fade" id="Profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--#region header  -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-bind="click: dismissProfil" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Gestion de Profile</h4>
+            </div>
+            <!--#endregion -->
+            <!--#region body  -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div>
+                            <label for="Titre">Login :</label>
+                            <input data-bind="value: login" />
+                        </div>
+
+                        <div>
+                            <label for="Titre">Mot de passe :</label>
+                            <input data-bind="value: password" />
+                        </div>
+
+                        <div>
+                            <label for="Titre">Confirmation du mot de passe :</label>
+                            <input data-bind="value: repeatPassword"/>
+                        </div>
+                        
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bind="click: AddProfil">Add</button>
+                    </div>
+
+                    <div>
+                        <table class="table-bordered table-responsive table-condensed">
+                            <thead>
+                                <tr>
+                                    <th >Login</th>
+                                    <th >Mot de passe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-bind="foreach: StockProfilExist">
+                                    <td data-bind="text: login"></td>
+                                    <td data-bind="text: password"></td>
+                                    <td><button class="close" data-bind="click: $root.deleteProfil">&times;</button></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: dismissProfil">Close</button>
+                        <button type="button" class="btn btn-primary" data-bind="click: SaveProfil">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
