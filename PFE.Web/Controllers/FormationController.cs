@@ -95,10 +95,7 @@ namespace PFE.Web.Controllers
             }
 
             Formation formation = Mapping.MapToFormation(obj);
-
             Profil profil = Mapping.MapToProfil(obj);
-            
-
             formationService.AddFormation(formation, profil, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
             return null;

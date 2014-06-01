@@ -20,20 +20,14 @@ namespace PFE.Web
                 .Include("~/scripts/Q.js")
                 .Include("~/scripts/breeze.debug.js")
                 .Include("~/scripts/bootstrap.js")
-                .Include("~/scripts/jquery.min.js")
-                .Include("~/scripts/moment.min.js")
-                .Include("~/scripts/moment.min.js")
-                .Include("~/scripts/bootstrap.min.js")
-                .Include("~/scripts/bootstrap-datetimepicker.min.js")
-                
                 .Include("~/scripts/moment.js")
+                .Include("~/scripts/knockout.validation.js")
               );
 
             bundles.Add(
               new StyleBundle("~/Content/css")
                 .Include("~/Content/ie10mobile.css")
                 .Include("~/Content/bootstrap.css")
-                .Include("~/Content/bootstrap.min.css")
                 .Include("~/Content/font-awesome.css")
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/toastr.css")

@@ -176,6 +176,8 @@
     <Content Include="App\views\AddFormation.html" />
     <Content Include="App\views\footer.html" />
     <Content Include="App\views\formations.html" />
+    <Content Include="App\views\GestionExamens.html" />
+    <Content Include="App\views\GestionProfil.html" />
     <Content Include="App\views\home.html" />
     <Content Include="App\views\nav.html" />
     <Content Include="App\views\shell.html" />
@@ -195,6 +197,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\knockout.validation.debug.js" />
+    <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Views\favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />

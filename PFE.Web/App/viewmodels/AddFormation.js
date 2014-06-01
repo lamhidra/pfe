@@ -2,12 +2,15 @@
 
     var title = 'AddFormation',
     //
-    Titre = ko.observable(),
+    Titre = ko.observable().extend({
+        required: true,
+        minLength: 3
+    }),
     NomOrganisme = ko.observable(),
     Description = ko.observable(),
     DateDebut = ko.observable(),
     DateFin = ko.observable();
-
+  
     //Gestion des examens
     //#region GE
 
