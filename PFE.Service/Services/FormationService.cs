@@ -72,16 +72,19 @@ namespace PFE.Service
             SaveFormation();
 
 
-            for (int i = 0; i < ListIds.Count; i++)
+            if (ListIds != null)
             {
-                FormationExamen formationExamen = new FormationExamen();
-                formationExamen.FormationID = formation.FormationID;
-                formationExamen.ExamenID = (int)ListIds[i];
-                formationExamen.MaxApprenant = ListNombreApprenants[i];
-                formationExamen.NombreApprenantPasserExamen = 0;
-                formationExamenRepository.Add(formationExamen);
-                SaveFormation();
+                for (int i = 0; i < ListIds.Count; i++)
+                {
+                    FormationExamen formationExamen = new FormationExamen();
+                    formationExamen.FormationID = formation.FormationID;
+                    formationExamen.ExamenID = (int)ListIds[i];
+                    formationExamen.MaxApprenant = ListNombreApprenants[i];
+                    formationExamen.NombreApprenantPasserExamen = 0;
+                    formationExamenRepository.Add(formationExamen);
+                    SaveFormation();
 
+                }
             }
 
             //formationExamenRepository.

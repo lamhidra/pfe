@@ -18,6 +18,8 @@ namespace PFE.Service.Services
         void UpdateProfil(Profil profil);
         void AddProfil(Profil profil);
         void SaveProfil();
+
+        bool lookIfExist(Profil profil);
     
     }
     public class ProfilService : IProfilService
@@ -61,9 +63,15 @@ namespace PFE.Service.Services
             SaveProfil();
         }
 
+        public bool lookIfExist(Profil profil)
+        {
+            return profilRepository.LookIfExist(profil);
+        }
+
         public void SaveProfil()
         {
             unitOfWork.Commit();
         }
+
     }
 }
