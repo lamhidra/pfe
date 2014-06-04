@@ -13,10 +13,22 @@ namespace PFE.DAL.Repository
            : base(databaseFactory){ 
         
         }
+
+        public bool LookIfExist(Profil profil)
+        {
+            IEnumerable<Profil> ListProfil = GetAll();
+
+            foreach(Profil p in ListProfil ) {
+                if (p.Login == profil.Login && p.Password == profil.Password)
+                    return true;
+            }
+
+            return false;
+        }
     }
 
     public interface IProfilRepository : IRepository<Profil> 
     {
-    
+       bool LookIfExist(Profil profil);
     } 
 }
