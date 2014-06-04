@@ -160,6 +160,7 @@
     <Compile Include="Controllers\ExamenController.cs" />
     <Compile Include="Controllers\FormationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProfilController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -169,16 +170,18 @@
     <Content Include="App\main.js" />
     <Content Include="App\services\dataservice.js" />
     <Content Include="App\services\logger.js" />
-    <Content Include="App\viewmodels\AddFormation.js" />
-    <Content Include="App\viewmodels\formations.js" />
-    <Content Include="App\viewmodels\home.js" />
+    <Content Include="App\viewmodels\GestionDesFormations\AjoutFormation\index.js" />
+    <Content Include="App\viewmodels\GestionDesFormations\ListeFormations\index.js" />
+    <Content Include="App\viewmodels\GestionDesAnnonces\ListeAnnonces\index.js" />
+    <Content Include="App\viewmodels\index.js" />
     <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\views\AddFormation.html" />
+    <Content Include="App\views\GestionDesFormations\AjoutFormation\index.html" />
     <Content Include="App\views\footer.html" />
-    <Content Include="App\views\formations.html" />
-    <Content Include="App\views\GestionExamens.html" />
-    <Content Include="App\views\GestionProfil.html" />
-    <Content Include="App\views\home.html" />
+    <Content Include="App\views\GestionDesFormations\ListeFormations\index.html" />
+    <Content Include="App\views\GestionDesAnnonces\ListeAnnonces\index.html" />
+    <Content Include="App\views\GestionDesFormations\AjoutFormation\GestionExamens.html" />
+    <Content Include="App\views\GestionDesFormations\AjoutFormation\GestionProfil.html" />
+    <Content Include="App\views\index.html" />
     <Content Include="App\views\nav.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="Areas\HelpPage\HelpPage.css" />

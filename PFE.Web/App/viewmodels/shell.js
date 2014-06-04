@@ -19,14 +19,16 @@
             });
 
             var routes = [
-                { route: '', moduleId: 'home', title: 'Home', nav: 1 },
-                { route: 'formations', moduleId: 'formations', title: 'Formations', nav: 2 },
-                { route: 'AddFormation', moduleId: 'AddFormation', title: 'AddFormation', nav: 3 }];
+                { route: ['', 'application*module'], moduleId: 'index', title: 'Application', nav: 1, hash: '#application' }];
+               // { route: 'application*module', moduleId: 'viewmodels/index', title: 'Home', nav: 2, hash: '#application' }];
+                /*{ route: 'formations', moduleId: 'formations', title: 'Formations', nav: 2 },
+                { route: 'AddFormation', moduleId: 'AddFormation', title: 'AddFormation', nav: 3 },
+                { route: 'Annonces', moduleId: 'Annonces', title: 'aAnnonces', nav: 4 }];*/
+            // makeRelative({ moduleId: 'viewmodels' }).// router will look here for viewmodels by convention
 
-            return router.makeRelative({ moduleId: 'viewmodels' }) // router will look here for viewmodels by convention
-                .map(routes)            // Map the routes
-                .buildNavigationModel() // Finds all nav routes and readies them
-                .activate();            // Activate the router
+            return router.makeRelative({ moduleId: 'viewmodels' }).map(routes)            // Map the routes
+                .buildNavigationModel().activate(); // Finds all nav routes and readies them
+                           // Activate the router
         }
 
         function log(msg, data, showToast) {

@@ -1,15 +1,38 @@
 ﻿define(['services/logger', 'durandal/system'], function (logger, system) {
 
-    var title = 'AddFormation',
+    var title = 'Ajouter une formation';
+
+    //validation
+    var mustEqual = function (val, other) {
+        return val == other();
+    };
+
+    var dateValidation = function (val, other) {
+        return val >= other();
+    };
     //
-    Titre = ko.observable().extend({
+    var Titre = ko.observable().extend({
         required: true,
-        minLength: 3
+        minLength: 8,
+        maxLength:20
     }),
-    NomOrganisme = ko.observable(),
-    Description = ko.observable(),
-    DateDebut = ko.observable(),
-    DateFin = ko.observable();
+    NomOrganisme = ko.observable().extend({
+        required: true,
+        minLength: 8,
+        maxLength: 20
+    }),
+    Description = ko.observable().extend({
+        required: true,
+        minLength: 8,
+        maxLength: 20
+    }),
+    DateDebut = ko.observable().extend({
+        date: true,
+        required: true
+    }),
+    DateFin = ko.observable().extend({
+        validation: { validator: dateValidation, message: 'Date de Fin inferieure du date de debut !.', params: DateDebut }
+    });
   
     //Gestion des examens
     //#region GE
@@ -18,7 +41,9 @@
 
     var selectedCategorie = ko.observable(),
         selectedExamen = ko.observable(),
-        NombreApprenant = ko.observable(),
+        NombreApprenant = ko.observable().extend({
+            required: true
+        }),
         ListChoix = ko.observableArray(),
         StockListChoix = ko.observableArray(),
         Categorie = ['Serveur', 'Desktop', 'Applications', 'BaseDeDonnee', 'Developpeur'],
@@ -83,7 +108,9 @@
 
     function StockList() {
         system.log('Main Module started');
-        NombreApprenant('');
+
+        //Save changes
+        NombreApprenant(undefined);
         selectedCategorie(Categorie[0]);
         ListChoix([]);
         for (var i = 0; i < StockListChoix().length; i++) {
@@ -94,9 +121,11 @@
 
     function Dismiss() {
 
-        NombreApprenant('');
+
         selectedCategorie(Categorie[0]);
         StockListChoix.removeAll();
+        NombreApprenant(undefined);
+
 
         //system.log(StockListChoix([]).length + "");
         for (var i = 0; i < ListChoix().length; i++) {
@@ -127,9 +156,20 @@
     //#region GP
 
     //Variables and Observables
-    var login = ko.observable();
-    var password = ko.observable();
-    var repeatPassword = ko.observable();
+    var login = ko.observable().extend({
+        required: true,
+        minLength: 6,
+        maxLength: 15
+    });
+    var password = ko.observable().extend({
+        required: true,
+        minLength: 6,
+        maxLength: 15
+    });
+
+    var repeatPassword = ko.observable().extend({
+        validation: { validator: mustEqual, message: 'Passwords do not match.', params: password }
+    });
     var StockProfilExist = ko.observableArray();
     var ProfilExist = ko.observableArray();
 
@@ -160,7 +200,9 @@
     }
 
     function SaveProfil() {
-    
+        //ProfilExist() may hold an old Profil so we need to clear it
+        //StockProfil empty means this is the first time we enter the profil modal or we cleaned an existed profil.
+
         system.log('SaveProfil');
         if (ProfilExist().length > 0) { ProfilExist().pop(); }
         if (StockProfilExist().length > 0) {
@@ -170,9 +212,11 @@
 
     function dismissProfil() {
         system.log('dismissProfil');
-        login('');
-        password('');
-        repeatPassword('');
+        login(undefined);
+        password(undefined);
+        repeatPassword(undefined)
+
+        //cancel changes and push the existed profil in StockProfiExist ObservableArray
         if (StockProfilExist().length > 0) { StockProfilExist().pop(); }
         if (ProfilExist().length > 0) {
             StockProfilExist().push(ProfilExist()[0]);
@@ -185,8 +229,15 @@
     //#endregion GE
 
 
+    //Errors
+    var MessageError = ko.observable();
+    function clearMessageError() {
+        MessageError(undefined);
+    }
+
     var vm = {
         activate: activate,
+        querySucceed: querySucceed,
         title: title,
         Add: Add,
         Titre: Titre,
@@ -215,7 +266,11 @@
         deleteProfil: deleteProfil,
         dismissProfil: dismissProfil,
         SaveProfil: SaveProfil,
-        repeatPassword: repeatPassword
+        repeatPassword: repeatPassword,
+
+        //Errors
+        MessageError: MessageError,
+        clearMessageError: clearMessageError
     };
 
     return vm;
@@ -227,43 +282,87 @@
     }
 
     function Add() {
+        //MessageError('')
 
-        var ListExamenIds = [];
-        var ListMaxApprenants = [];
-        for (var i = 0; i < ListChoix().length; i ++){
-            ListExamenIds[i] = ListChoix()[i].id;
-            ListMaxApprenants[i] = ListChoix()[i].nombreApprenant;
-            system.log(ListChoix()[0].id);
-
+        MessageError(undefined);
+        MessageError.valueHasMutated();
+        if (ProfilExist().length > 0) {
+            login('valogin');
+            password('password');
+            repeatPassword('password');
+            NombreApprenant('1');
         }
+     
+        vm.errors = ko.validation.group(vm);
+        if (vm.errors().length == 0) {
 
+                var ListExamenIds = [];
+                var ListMaxApprenants = [];
+                for (var i = 0; i < ListChoix().length; i ++){
+                    ListExamenIds[i] = ListChoix()[i].id;
+                    ListMaxApprenants[i] = ListChoix()[i].nombreApprenant;
+                    system.log(ListChoix()[0].id);
 
-        var options = {
-            url: '/api/Formation',
-            type: 'post',
-            data: {
-                'Login': ProfilExist()[0].login,
-                'Password': ProfilExist()[0].password,
-                'Titre': Titre(),
-                'NomOrganisme': NomOrganisme(),
-                'Description': Description(),
-                'DateDebut': DateDebut(),
-                'DateFin': DateFin(),
-                'ListMaxApprenants': ListMaxApprenants,
-                'ListId': ListExamenIds
                 }
-        }
+
+
+                var options = {
+                    url: '/api/Formation',
+                    type: 'post',
+                    data: {
+                        'Login': ProfilExist()[0].login,
+                        'Password': ProfilExist()[0].password,
+                        'Titre': Titre(),
+                        'NomOrganisme': NomOrganisme(),
+                        'Description': Description(),
+                        'DateDebut': DateDebut(),
+                        'DateFin': DateFin(),
+                        'ListMaxApprenants': ListMaxApprenants,
+                        'ListId': ListExamenIds
+                    }
+                };
         
-        return $.ajax(options);
+                $.ajax(options).then(querySucceed).fail(querySucceed);
+        }
+        else {
+            var message = "<p>" + ".Le Formulaire contient des erreurs \n" + "</p>";
+            if (ProfilExist().length == 0) {
+                message += " <p>" + ".Une Formation doit avoir un profil." + "</p>";
+                login(undefined);
+                password(undefined);
+                repeatPassword(undefined);
+                NombreApprenant(undefined);
+            }
+            MessageError(message);
+            logger.log(null , null, "Formulaire contient des erreurs", true);
+            system.log('Le Formulaire contient des erreurs');
+        }
+
+
+    }
+
+    function querySucceed() {
+        logger.log(null, null, "Formation Ajouté avec succes", true);
+
+        system.log('querySucceed');
+        Titre(undefined);
+        NomOrganisme(undefined);
+        Description(undefined);
+        DateDebut(undefined);
+        DateFin(undefined);
+        selectedCategorie(undefined);
+        selectedExamen(undefined);
+        NombreApprenant(undefined);
+        ListChoix([]);
+        StockListChoix([]);
+        ProfilExist([]);
+        listExamen([]);
+        login(undefined);
+        password(undefined);
+        repeatPassword(undefined);
+        StockProfilExist([]);
+        return true;
+
     }
 
 });
-
-/*'Login': login(),
-               'Password': password(),
-               'Titre': Titre(),
-               'NomOrganisme': NomOrganisme(),
-               'Description': Description(),
-               'DateDebut': DateDebut(),
-               'DateFin': DateFin(),
-               'MaxApprenant': NombreApprenant()*/

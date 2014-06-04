@@ -32,6 +32,7 @@ namespace PFE.Web
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/toastr.css")
                 .Include("~/Content/app.css")
+                .Include("~/Content/Site.css")
            );
            /* bundles.Add(
              new ScriptBundle("~/Scripts/vendor")
