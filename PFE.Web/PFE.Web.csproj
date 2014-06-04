@@ -175,6 +175,7 @@
     <Content Include="App\viewmodels\GestionDesAnnonces\ListeAnnonces\index.js" />
     <Content Include="App\viewmodels\index.js" />
     <Content Include="App\viewmodels\shell.js" />
+    <Content Include="App\viewmodels\testMarkup.js" />
     <Content Include="App\views\GestionDesFormations\AjoutFormation\index.html" />
     <Content Include="App\views\footer.html" />
     <Content Include="App\views\GestionDesFormations\ListeFormations\index.html" />
@@ -184,6 +185,7 @@
     <Content Include="App\views\index.html" />
     <Content Include="App\views\nav.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="App\views\testMarkup.html" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

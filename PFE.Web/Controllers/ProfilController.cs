@@ -31,9 +31,10 @@ namespace PFE.Web.Controllers
 
         [HttpGet]
         [Route("api/Profil/Exist")]
-        public bool Exist([FromBody] Profil profil)
+        public bool Exist([FromUri] Profil profil)
         {
-            return profilService.lookIfExist(profil);
+            bool result = profilService.lookIfExist(profil);
+            return result;
         }
 
 

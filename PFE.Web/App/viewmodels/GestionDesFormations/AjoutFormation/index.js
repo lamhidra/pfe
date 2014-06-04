@@ -10,6 +10,10 @@
     var dateValidation = function (val, other) {
         return val >= other();
     };
+
+    var digitValidation = function (val, max) {
+        return val <= max;
+    }
     //
     var Titre = ko.observable().extend({
         required: true,
@@ -42,7 +46,10 @@
     var selectedCategorie = ko.observable(),
         selectedExamen = ko.observable(),
         NombreApprenant = ko.observable().extend({
-            required: true
+            required: true,
+            digit: true,
+            validation: { validator: digitValidation, message: '<= 1000 !', params: 1000 }
+
         }),
         ListChoix = ko.observableArray(),
         StockListChoix = ko.observableArray(),
@@ -284,17 +291,49 @@
     function Add() {
         //MessageError('')
 
+        //Validation (Just for Markup)
         MessageError(undefined);
         MessageError.valueHasMutated();
+
+        var isProfilExist = false;
+        var self = this;
+
         if (ProfilExist().length > 0) {
             login('valogin');
             password('password');
             repeatPassword('password');
             NombreApprenant('1');
-        }
+        
      
+            //Check if the profil does exist.
+
+            //url: "api/Profil/Exist?" + "Login=" + ProfilExist()[0].login + "&" + "Password=" + ProfilExist()[0].password,
+
+            var options = {
+                url: "api/Profil/Exist",
+                type: 'get',
+                data: {
+                    'Login': ProfilExist()[0].login,
+                    'Password': ProfilExist()[0].password
+                },
+                async: false
+            };
+
+
+            $.ajax(options).then(function (result) {
+
+                if (result == true) {
+                    system.log('Profil deja exist');
+                    isProfilExist = true;
+                }
+                return true;
+            });
+        }
+        system.log(isProfilExist);
+
+        //
         vm.errors = ko.validation.group(vm);
-        if (vm.errors().length == 0) {
+        if (vm.errors().length == 0 && isProfilExist == false) {
 
                 var ListExamenIds = [];
                 var ListMaxApprenants = [];
@@ -325,14 +364,25 @@
                 $.ajax(options).then(querySucceed).fail(querySucceed);
         }
         else {
-            var message = "<p>" + ".Le Formulaire contient des erreurs \n" + "</p>";
+
+            var message = "" ;//"<p class=\"text-danger\>";  
+
+            if (vm.errors().length > 0)
+                message += "<p class=\"text-info\">" + ".Le Formulaire contient des erreurs \n" + "</p>";
+
+            if (isProfilExist == true) 
+                message += "<p class=\"text-info\">" + ".Profil deja exist" + "</p>";
+
+
             if (ProfilExist().length == 0) {
-                message += " <p>" + ".Une Formation doit avoir un profil." + "</p>";
+                message += " <p class=\"text-info\">" + ".Une Formation doit avoir un profil." + "</p>";
                 login(undefined);
                 password(undefined);
                 repeatPassword(undefined);
                 NombreApprenant(undefined);
             }
+
+           // message += "</p>";
             MessageError(message);
             logger.log(null , null, "Formulaire contient des erreurs", true);
             system.log('Le Formulaire contient des erreurs');
@@ -350,17 +400,15 @@
         Description(undefined);
         DateDebut(undefined);
         DateFin(undefined);
-        selectedCategorie(undefined);
-        selectedExamen(undefined);
         NombreApprenant(undefined);
-        ListChoix([]);
-        StockListChoix([]);
-        ProfilExist([]);
-        listExamen([]);
+        ListChoix.removeAll();
+        StockListChoix.removeAll();
+        ProfilExist.removeAll();
+        listExamen.removeAll();
         login(undefined);
         password(undefined);
         repeatPassword(undefined);
-        StockProfilExist([]);
+        StockProfilExist.removeAll();
         return true;
 
     }
