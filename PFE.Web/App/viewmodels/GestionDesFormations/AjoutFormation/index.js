@@ -1,19 +1,8 @@
-﻿define(['services/logger', 'durandal/system'], function (logger, system) {
+﻿define(['services/logger', 'durandal/system', 'services/validation'], function (logger, system, validation) {
 
     var title = 'Ajouter une formation';
 
-    //validation
-    var mustEqual = function (val, other) {
-        return val == other();
-    };
-
-    var dateValidation = function (val, other) {
-        return val >= other();
-    };
-
-    var digitValidation = function (val, max) {
-        return val <= max;
-    }
+   
     //
     var Titre = ko.observable().extend({
         required: true,
@@ -35,7 +24,7 @@
         required: true
     }),
     DateFin = ko.observable().extend({
-        validation: { validator: dateValidation, message: 'Date de Fin inferieure du date de debut !.', params: DateDebut }
+        validation: { validator: validation.dateValidation, message: 'Date de Fin inferieure du date de debut !.', params: DateDebut }
     });
   
     //Gestion des examens
@@ -48,7 +37,7 @@
         NombreApprenant = ko.observable().extend({
             required: true,
             digit: true,
-            validation: { validator: digitValidation, message: '<= 1000 !', params: 1000 }
+            validation: { validator: validation.digitValidation, message: '<= 1000 !', params: 1000 }
 
         }),
         ListChoix = ko.observableArray(),
@@ -175,7 +164,7 @@
     });
 
     var repeatPassword = ko.observable().extend({
-        validation: { validator: mustEqual, message: 'Passwords do not match.', params: password }
+        validation: { validator: validation.mustEqual, message: 'Passwords do not match.', params: password }
     });
     var StockProfilExist = ko.observableArray();
     var ProfilExist = ko.observableArray();
@@ -365,7 +354,7 @@
         }
         else {
 
-            var message = "" ;//"<p class=\"text-danger\>";  
+            var message = "" ;
 
             if (vm.errors().length > 0)
                 message += "<p class=\"text-info\">" + ".Le Formulaire contient des erreurs \n" + "</p>";

@@ -19,6 +19,8 @@ namespace PFE.Service.Services
         void AddProfil(Profil profil);
         void SaveProfil();
 
+        Profil GetFormationProfil(long id);
+
         bool lookIfExist(Profil profil);
     
     }
@@ -66,6 +68,11 @@ namespace PFE.Service.Services
         public bool lookIfExist(Profil profil)
         {
             return profilRepository.LookIfExist(profil);
+        }
+
+        public Profil GetFormationProfil(long id)
+        {
+            return profilRepository.Get(p => p.FormationID == id);
         }
 
         public void SaveProfil()

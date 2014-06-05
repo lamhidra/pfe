@@ -17,6 +17,9 @@ namespace PFE.Service.Services
         void DeleteFormationExamen(FormationExamen formationExamen);
         void UpdateFormationExamen(FormationExamen formationExamen);
         void AddFormationExamen(FormationExamen formationExamen);
+
+        IEnumerable<FormationExamen> GetFormationInfos(long id);
+
         void SaveFormationExamen();
     }
 
@@ -60,9 +63,16 @@ namespace PFE.Service.Services
             SaveFormationExamen();
         }
 
+        public IEnumerable<FormationExamen> GetFormationInfos(long id)
+        {
+            return formationExamenRepository.GetMany(f => f.FormationID == id);
+        }
+
         public void SaveFormationExamen()
         {
             unitOfWork.Commit();
         }
+
+
     }
 }

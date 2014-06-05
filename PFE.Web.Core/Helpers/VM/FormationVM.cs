@@ -8,12 +8,15 @@ namespace PFE.Web.Core.Helpers.VM
 
     public interface IProfil
     {
+        int ProfilID { get; set; }
+
         string Login { get; set; }
         string Password { get; set; }
     }
 
     public interface IFormation
     {
+        int FormationID { get; set; }
 
         DateTime DateDebut { get; set; }
         DateTime DateFin { get; set; }
@@ -26,8 +29,9 @@ namespace PFE.Web.Core.Helpers.VM
 
     public interface IFormationExamen
     {
+        int FormationExamenID { get; set; }
+
         int MaxApprenant { get; set; }
-        int NombreApprenantPasserExamen { get; set; }
 
         List<int> ListMaxApprenants { get; set; }
         List<long> ListId { get; set; }
@@ -35,8 +39,10 @@ namespace PFE.Web.Core.Helpers.VM
     }
     public class FormationVM : IProfil, IFormation, IFormationExamen
     {
+        public FormationVM() { 
+        }
+
         public int MaxApprenant { get; set; }
-        public int NombreApprenantPasserExamen { get; set; }
 
         public DateTime DateDebut { get; set; }
         public DateTime DateFin { get; set; }
@@ -51,5 +57,14 @@ namespace PFE.Web.Core.Helpers.VM
         public List<int> ListMaxApprenants { get; set; }
         public List<long> ListId { get; set; }
 
+
+        public int FormationID { get; set; }
+
+
+        public int ProfilID { get; set; }
+
+
+        public int FormationExamenID { get; set; }
+        
     }
 }

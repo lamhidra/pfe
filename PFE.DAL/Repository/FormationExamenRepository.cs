@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PFE.Domain;
+using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace PFE.DAL.Repository
 {
@@ -13,7 +15,15 @@ namespace PFE.DAL.Repository
             : base(databaseFactory) { 
         
         }
+
+        public void DeleteFormationExamens(Expression<Func<FormationExamen, bool>> where)
+        {
+            DataContext.FormationExamens.RemoveRange(DataContext.FormationExamens.Where(where));
+        }
     }
 
-    public interface IFormationExamenRepository : IRepository<FormationExamen> { }
+    public interface IFormationExamenRepository : IRepository<FormationExamen> {
+
+        void DeleteFormationExamens(Expression<Func<FormationExamen, bool>> where);
+    }
 }

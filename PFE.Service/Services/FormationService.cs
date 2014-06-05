@@ -7,7 +7,7 @@ using PFE.DAL;
 using PFE.DAL.Repository;
 using PFE.Domain;
 
-namespace PFE.Service
+namespace PFE.Service.Services
 {
 
     public interface IFormationService {
@@ -15,11 +15,12 @@ namespace PFE.Service
         IEnumerable<Formation> GetFormations();
         Formation GetFormationById(long id);
         void Delete(Formation formation);
-        void update(Formation formation);
+        void UpdateFormation(Formation formation, Profil profil,
+            List<long> ListIds, List<int> ListNombreApprenants);
 
         void AddFormation(Formation formation, Profil profil,
             List<long> ListIds, List<int> ListNombreApprenants);
-        void SaveFormation();
+        void Save();
     }
 
     public class FormationService : IFormationService
@@ -57,19 +58,40 @@ namespace PFE.Service
             formationExamenRepository.Delete(f => f.FormationID == formation.FormationID);
             profilRepository.Delete(p => p.FormationID == formation.FormationID);
             formationRespository.Delete(formation);
-            SaveFormation();
+            Save();
         }
 
-        public void update(Formation formation)
+        public void UpdateFormation(Formation formation, Profil profil,
+            List<long> ListIds, List<int> ListNombreApprenants)
         {
             formationRespository.Update(formation);
-            SaveFormation();
+            Save();
+
+
+            formationExamenRepository.DeleteFormationExamens(f => f.FormationExamenID == formation.FormationID);
+            Save();
+            if (ListIds != null)
+            {
+                for (int i = 0; i < ListIds.Count; i++)
+                {
+                    FormationExamen formationExamen = new FormationExamen();
+                    formationExamen.FormationID = formation.FormationID;
+                    formationExamen.ExamenID = (int)ListIds[i];
+                    formationExamen.MaxApprenant = ListNombreApprenants[i];
+                    formationExamen.NombreApprenantPasserExamen = 0;
+                    formationExamenRepository.Add(formationExamen);
+                    Save();
+
+                }
+            }
+
+            profilRepository.Update(profil);
         }
 
         public void AddFormation(Formation formation, Profil profil, List<long> ListIds, List<int> ListNombreApprenants) 
         {
             formationRespository.Add(formation);
-            SaveFormation();
+            Save();
 
 
             if (ListIds != null)
@@ -82,7 +104,7 @@ namespace PFE.Service
                     formationExamen.MaxApprenant = ListNombreApprenants[i];
                     formationExamen.NombreApprenantPasserExamen = 0;
                     formationExamenRepository.Add(formationExamen);
-                    SaveFormation();
+                    Save();
 
                 }
             }
@@ -90,10 +112,10 @@ namespace PFE.Service
             //formationExamenRepository.
             profil.FormationID = formation.FormationID;
             profilRepository.Add(profil);
-            SaveFormation();
+            Save();
         }
 
-        public void SaveFormation() 
+        public void Save() 
         {
             unitOfWork.Commit();
         }

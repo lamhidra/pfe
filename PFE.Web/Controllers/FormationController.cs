@@ -12,6 +12,7 @@ using PFE.Domain;
 using PFE.DAL;
 using PFE.Service;
 using PFE.Web.Core.Helpers.VM;
+using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
@@ -19,10 +20,15 @@ namespace PFE.Web.Controllers
     {
 
         private readonly IFormationService formationService;
+        private readonly IProfilService profilService;
+        private readonly IFormationExamenService formationExamenService;
 
-        public FormationController(IFormationService formationService) 
+        public FormationController(IFormationService formationService,
+            IProfilService profilService, IFormationExamenService formationExamenService)
         {
             this.formationService = formationService;
+            this.profilService = profilService;
+            this.formationExamenService = formationExamenService;
         }
 
         // GET api/Formation
@@ -34,54 +40,61 @@ namespace PFE.Web.Controllers
             return formationService.GetFormations();
         }
 
+        [HttpGet]
+        [Route("api/Formation/FormationsTitres")]
+        public IEnumerable<KeyValuePair<int, string>> getFormationsTitres()
+        {
+
+            IEnumerable<Formation> formations = formationService.GetFormations();
+
+            Dictionary<int, string> titreFormation = new Dictionary<int, string>();
+            foreach (Formation e in formations)
+            {
+                titreFormation.Add(e.FormationID, e.Titre);
+            }
+
+            return titreFormation;
+        }
+
+
         // GET api/Formation/5
         [HttpGet]
         [Route("api/Formation/{id}")]
         [ResponseType(typeof(Formation))]
-        public IHttpActionResult GetFormation(int id)
+        public FormationVM GetFormation(int id)
         {
             Formation formation = formationService.GetFormationById(id);
-            if (formation == null)
+            Profil profil = profilService.GetFormationProfil(id);
+            IEnumerable<FormationExamen> formationExamen = formationExamenService.GetFormationInfos(id);
+            List<long> ListId = new List<long>();
+            List<int> ListMaxApprenants = new List<int>();
+
+            foreach (FormationExamen f in formationExamen)
             {
-                return NotFound();
+                ListId.Add(f.ExamenID);
+                ListMaxApprenants.Add(f.MaxApprenant);
             }
 
-            return Ok(formation);
+            FormationVM formationVm = Mapping.MapToFormationVM(formation, profil, ListId, ListMaxApprenants);
+
+            return formationVm;
         }
 
         // PUT api/Formation/5
-        /*public IHttpActionResult PutFormation(int id, Formation formation)
+        public IHttpActionResult PutFormation(int id, [FromBody] FormationVM obj)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != formation.FormationID)
-            {
-                return BadRequest();
-            }
+            Formation formation = Mapping.MapToFormation(obj);
+            Profil profil = Mapping.MapToProfil(obj);
+            formationService.UpdateFormation(formation, profil, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
-            db.Entry(formation).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FormationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            
             return StatusCode(HttpStatusCode.NoContent);
-        }*/
+        }
 
         // POST api/Formation
         [HttpPost]
@@ -98,16 +111,16 @@ namespace PFE.Web.Controllers
             Profil profil = Mapping.MapToProfil(obj);
             formationService.AddFormation(formation, profil, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
-            return null;
+            return Ok(true);
         }
 
-       
+
 
         //DELETE api/Formation/5
         [HttpDelete]
         [Route("api/Formation")]
         [ResponseType(typeof(Formation))]
-        public IHttpActionResult DeleteFormation ([FromBody] List<long> id)
+        public IHttpActionResult DeleteFormation([FromBody] List<long> id)
         {
             int count = id.Count;
 
@@ -116,22 +129,9 @@ namespace PFE.Web.Controllers
                 Formation formation = formationService.GetFormationById(id[i]);
                 formationService.Delete(formation);
             }
-        
+
             return Ok(true);
         }
-
-        /* protected override void Dispose(bool disposing)
-         {
-             if (disposing)
-             {
-                 db.Dispose();
-             }
-             base.Dispose(disposing);
-         }
-
-         private bool FormationExists(int id)
-         {
-             return db.Formations.Count(e => e.FormationID == id) > 0;
-         }*/
     }
+
 }
