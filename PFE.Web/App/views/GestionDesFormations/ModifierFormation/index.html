@@ -1,17 +1,9 @@
-﻿
-<div class="col-md-6 ">
-    <h2 data-bind="text: title"></h2>
+﻿<div>
+    <select data-bind="options: ListFormations, optionsText: 'titre', value:selectedFormation">
+        <option>selectionne une Formation---</option>  
+    </select>
 
-    <div data-bind="if: MessageError()">
-        <div class="alert alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" data-bind="click: clearMessageError">
-                &times;
-            </button>
-            <strong>Warning!</strong> <p data-bind="html: MessageError()"></p>.
-        </div>
-    </div>
-
-    <form class="panel">
+    <form class="panel" data-bind="foreach: data">
         <!--Titre-->
         <div class="form-group">
             <label for="Titre">Titre :</label>
@@ -48,12 +40,12 @@
                 <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
                    data-toggle="modal" data-target="#Gestion">Modifier des examens</a>
                 <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
-                   data-toggle="modal" data-target="#Profile">Ajouter un Profile</a>
+                   data-toggle="modal" data-target="#Profile">Modifier le Profile</a>
             </p>
         </div>
         <div class="btn-group container">
             <p class="tpbutton btn-toolbar" style="text-align:center">
-                <a class="btn navbar-btn btn-primary btn-success" data-bind="click: Add">Ajouter</a>
+                <a class="btn navbar-btn btn-primary btn-success" >Modifier</a>
                 <a class="btn navbar-btn btn-default btn-danger" href="#ap" target="_texturepack">Annuler</a>
             </p>
         </div>
@@ -61,14 +53,10 @@
 
 </div>
 
-<!--pop-up Gestion des examens-->
-<div class="modal fade" id="Gestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <!--ko compose: 'GestionDesFormations/ModifierFormation/F_ModifierExamens.html'--><!--/ko-->
-</div>
-
 
 <!--pop-up Gestion de profil-->
 <div class="modal fade" id="Profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <!--ko compose: 'GestionDesFormations/ModifierFormation/F_ModifierProfil.html'--><!--/ko-->
 </div>
+
 
