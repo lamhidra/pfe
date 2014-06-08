@@ -1,88 +1,106 @@
 ﻿requirejs.config({
-
     paths: {
-
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
-        'transitions': '../Scripts/durandal/transitions'
+        'transitions': '../Scripts/durandal/transitions',
+        'knockout': '../Scripts/knockout-2.3.0',
+        'knockout.validation': '../Scripts/knockout.validation',
+        'bootstrap': '../Scripts/bootstrap',
+        'jquery': '../Scripts/jquery-1.10.2',
+        'jquery.utilities': '../Scripts/jquery.utilities',
+        'toastr': '../Scripts/toastr'
+    },
+    shim: {
+        'jquery.utilities': {
+            deps: ['jquery']
+        },
+        'bootstrap': {
+            deps: ['jquery'],
+            exports: 'jQuery'
+        },
+        'knockout.validation': {
+            deps: ['knockout']
+        }
     }
 });
 
-define('jquery', function () { return jQuery; });
-define('knockout', ko);
-
-
-define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router', 'services/logger'], boot);
-
-function boot(app, viewLocator, system, router, logger) {
-
-    // Enable debug message to show in the console 
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/composition', 'global/session', 'knockout', 'knockout.validation'],
+    function (system, app, viewLocator,composition, session, ko) {
+    //>>excludeStart("build", true);
     system.debug(true);
-    //alert('after : system.debug(true);');
+    //>>excludeEnd("build");
 
-    app.title = 'My App';
-    //alert('after : app.title = main;');
+    app.title = 'Durandal 451';
 
     app.configurePlugins({
-        router: true
+        router: true,
+        dialog: true,
+        widget: true
     });
-    //alert('after : Configure;');
 
+    composition.addBindingHandler('hasFocus');
 
-    app.start().then(function () {
-        toastr.options.positionClass = 'toast-bottom-right';
-        toastr.options.backgroundpositionClass = 'toast-bottom-right';
-
-        // When finding a viewmodel module, replace the viewmodel string 
-        // with view to find it partner view.
-        // [viewmodel]s/sessions --> [view]s/sessions.html
-        // Defaults to viewmodels/views/views. 
-        // Otherwise you can pass paths for modules, views, partials
+    configureKnockout();
+    
+    app.start().then(function() {
+        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
+        //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
-        
-        //alert('after : useConvention');
-        //Show the app by setting the root view model for our application.
+
+        //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
-       // system.log('Main Module started');
-
-//        alert('after : setRoot');
-
     });
-};
 
+    function configureKnockout()
+    {
+        ko.validation.init({
+            insertMessages: true,
+            decorateElement: true,
+            errorElementClass: 'has-error',
+            errorMessageClass: 'help-block'
+        });
 
+        if (!ko.utils.cloneNodes) {
+            ko.utils.cloneNodes = function (nodesArray, shouldCleanNodes) {
+                for (var i = 0, j = nodesArray.length, newNodesArray = []; i < j; i++) {
+                    var clonedNode = nodesArray[i].cloneNode(true);
+                    newNodesArray.push(shouldCleanNodes ? ko.cleanNode(clonedNode) : clonedNode);
+                }
+                return newNodesArray;
+            };
+        }
 
+        ko.bindingHandlers.ifIsInRole = {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                ko.utils.domData.set(element, '__ko_withIfBindingData', {});
+                return { 'controlsDescendantBindings': true };
+            },
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var withIfData = ko.utils.domData.get(element, '__ko_withIfBindingData'),
+                    dataValue = ko.utils.unwrapObservable(valueAccessor()),
+                    shouldDisplay = session.userIsInRole(dataValue),
+                    isFirstRender = !withIfData.savedNodes,
+                    needsRefresh = isFirstRender || (shouldDisplay !== withIfData.didDisplayOnLastUpdate),
+                    makeContextCallback = false;
 
+                if (needsRefresh) {
+                    if (isFirstRender) {
+                        withIfData.savedNodes = ko.utils.cloneNodes(ko.virtualElements.childNodes(element), true /* shouldCleanNodes */);
+                    }
 
+                    if (shouldDisplay) {
+                        if (!isFirstRender) {
+                            ko.virtualElements.setDomNodeChildren(element, ko.utils.cloneNodes(withIfData.savedNodes));
+                        }
+                        ko.applyBindingsToDescendants(makeContextCallback ? makeContextCallback(bindingContext, dataValue) : bindingContext, element);
+                    } else {
+                        ko.virtualElements.emptyNode(element);
+                    }
 
-
-
-/*define(function (require) {
-    var system = require('durandal/system'),
-        app = require('durandal/app'),
-        viewLocator = require('durandal/viewLocator'),
-        router = require('plugins/router');
-    alert('before : system.debug(true);');
-    system.debug(true);
-   alert('after : system.debug(true);');
-    app.title = 'main';
-    alert('after : app.title = main;');
-    app.configurePlugins({
-        router:true
-    });
-    alert('after : Configure;');
-
-    app.start().then(function () {
-        alert('before : useConvention');
-
-        //viewLocator.useConvention();
-        alert('after : useConvention');
-        app.setRoot('../viewmodels/shell');
-        alert('after : setRoot');
-
-    });
-});*/
-
-
-
+                    withIfData.didDisplayOnLastUpdate = shouldDisplay;
+                }
+            }
+        };
+    }
+});

@@ -1,35 +1,37 @@
-define(['durandal/system'],
-    function (system) {
+﻿define(['durandal/system', 'toastr'],
+    function (system, toastr) {
+        // Internal properties and functions
+        var defaults = {
+            source: "app",
+            title: "",
+            message: "no message provided",
+            data: "",
+            showToast: true,
+            type: "info"
+        };
+
+        function init() {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = 'toast-bottom-right';
+            toastr.options.backgroundpositionClass = 'toast-bottom-right';
+            toastr.options.fadeOut = 1000;
+        }
+
+        init();
+        
         var logger = {
-            log: log,
-            logError: logError
+            log: log
         };
 
         return logger;
 
-        function log(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'info');
-        }
+        function log(options) {
+            var opns = $.extend({}, defaults, options);
 
-        function logError(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'error');
-        }
+            system.log(opns.source + ", " + opns.type + ", " + opns.message + ", " + opns.data + " ");
 
-        function logIt(message, data, source, showToast, toastType) {
-            source = source ? '[' + source + '] ' : '';
-            if (data) {
-                system.log(source, message, data);
-            } else {
-                system.log(source, message);
+            if (opns.showToast) {
+                toastr[opns.type](opns.message, opns.title);
             }
-            if (showToast) {
-                if (toastType === 'error') {
-                    toastr.error(message);
-                } else {
-                    toastr.info(message);
-                }
-
-            }
-
         }
     });

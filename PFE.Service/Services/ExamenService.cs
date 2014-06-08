@@ -17,6 +17,9 @@ namespace PFE.Service.Services
         void UpdateExamen(Examen examen);
         void AddExamen(Examen examen);
         IEnumerable<Examen> getListExamensParCategorie(int categorie);
+
+        int getExamenCategorie(long id);
+        string getExamenTitre(long id);
         void SaveExamen();
     }
     
@@ -73,13 +76,21 @@ namespace PFE.Service.Services
             
             return examenRepository.GetMany(e => e.Categorie == c);
         }
-        
+
+
+        public int getExamenCategorie(long id)
+        {
+            return (int)(examenRepository.Get(e => e.ExamenID == id)).Categorie;
+        }
+
+        public string getExamenTitre(long id) 
+        { 
+            return (examenRepository.Get(e => e.ExamenID == id)).Titre;
+        }
         public void SaveExamen()
         {
             unitOfWork.Commit();
         }
-    
-
 
     }
 }

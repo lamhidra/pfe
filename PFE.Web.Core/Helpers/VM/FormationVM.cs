@@ -36,6 +36,10 @@ namespace PFE.Web.Core.Helpers.VM
         List<int> ListMaxApprenants { get; set; }
         List<long> ListId { get; set; }
 
+        List<int> ListCategorie { get; set; }
+
+        List<string> ListExamensTitre { get; set; }
+
     }
     public class FormationVM : IProfil, IFormation, IFormationExamen
     {
@@ -57,14 +61,14 @@ namespace PFE.Web.Core.Helpers.VM
         public List<int> ListMaxApprenants { get; set; }
         public List<long> ListId { get; set; }
 
-
         public int FormationID { get; set; }
 
-
         public int ProfilID { get; set; }
-
-
         public int FormationExamenID { get; set; }
+
+        public List<int> ListCategorie { get; set; }
+        public List<string> ListExamensTitre { get; set; }
         
+       
     }
 }

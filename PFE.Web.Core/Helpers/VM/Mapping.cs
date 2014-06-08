@@ -14,8 +14,8 @@ namespace PFE.Web.Core.Helpers.VM
            Formation formation = new Formation()
            {
                 FormationID = obj.FormationID,
-                DateDebut = DateTime.Now,
-                DateFin = DateTime.Now,
+                DateDebut = obj.DateDebut,
+                DateFin = obj.DateFin,
                 Description = obj.Description,
                 Titre = obj.Titre,
                 NomOrganisme = obj.NomOrganisme
@@ -39,8 +39,8 @@ namespace PFE.Web.Core.Helpers.VM
        }
 
 
-       public static FormationVM MapToFormationVM(Formation formation, Profil profil, List<long> vListId, 
-           List<int> vListMaxApprenants)
+       public static FormationVM MapToFormationVM(Formation formation, Profil profil, List<long> vListId,
+           List<int> vListMaxApprenants, List<int> vListCategorie, List<string> vListExamensTitre)
        {
            FormationVM formationVM = new FormationVM()
            {
@@ -55,8 +55,9 @@ namespace PFE.Web.Core.Helpers.VM
                 Password = profil.Password,
 
                 ListId = vListId,
-                ListMaxApprenants = vListMaxApprenants
-
+                ListMaxApprenants = vListMaxApprenants,
+                ListCategorie = vListCategorie,
+                ListExamensTitre = vListExamensTitre
            };
             
            return formationVM;
