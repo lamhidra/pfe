@@ -169,6 +169,8 @@
   <ItemGroup>
     <Content Include="App\main.js" />
     <Content Include="App\services\dataservice.js" />
+    <Content Include="App\services\F_examenDataService.js" />
+    <Content Include="App\services\Helpers.js" />
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\profilDataService.js" />
     <Content Include="App\services\validation.js" />

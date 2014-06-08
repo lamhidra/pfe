@@ -12,26 +12,25 @@
         <div class="modal-body">
 
             <form>
-                <div class="form-group">
+                <div class="form-inline">
                     <p>
                         <label for="Titre">Catégories :</label>
-                        <select data-bind="options: Categorie, value:selectedCategorie"></select>
+                        <select data-bind="options: Categorie, value:selectedCategorie" class="form-control"></select>
                     </p>
                 </div>
 
-                <div class="form-group">
+                <div class="form-inline">
                     <p>
                         <label for="Titre">examens :</label>
-                        <select data-bind="options:listExamen,optionsText:'titre', value:selectedExamen "></select>
+                        <select data-bind="options:listExamen,optionsText:'titre', value:selectedExamen " class="form-control"></select>
                     </p>
-
-                    <div class="form-group">
+                </div>
+                    <div class="form-inline">
                         <p>
                             <label for="Titre">Nombre Apprenants :</label>
-                            <input data-bind="value:NombreApprenant" />
+                            <input data-bind="value:NombreApprenant" class="form-control" />
                         </p>
                     </div>
-                </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-bind="click: AddToPanel">Add</button>

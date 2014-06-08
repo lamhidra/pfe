@@ -1,4 +1,5 @@
-﻿define(['services/logger', 'durandal/system', 'services/validation'], function (logger, system, validation) {
+﻿define(['services/logger', 'durandal/system', 'services/validation', 'services/profilDataService',
+     'services/F_examenDataService' ], function (logger, system, validation, ds, eds) {
 
     var title = 'Ajouter une formation';
 
@@ -49,18 +50,20 @@
     selectedCategorie.extend({ notify: 'always' });
 
     selectedCategorie.subscribe(function (newValue) {
-        var index = Categorie.indexOf(newValue),
-        url = "api/Examen/Categorie/" + index.toString();
-        $.getJSON(url, function (data) {
+        var options = {
+            url: "api/Examen/Categorie/" + Categorie.indexOf(newValue),
+            type: 'get',
+            async: false
+        };
+
+        $.ajax(options).then( function (data) {
             listExamen.removeAll();
-           // system.log(data[1]);
             for (Prop in data) {
                 system.log(Prop);
                 listExamen.push(new ListExamenDictionary(Prop, data[Prop]));
             }
 
-        })
-
+        });
     });
 
     // Methods
@@ -71,78 +74,22 @@
         return self;
     }
 
-    function ctor(vindex, vcategorie, vexamen, vnombreApprenant, vid) {
-        var self = this;
-        self.index = vindex;
-        self.examen = vexamen;
-        self.categorie = vcategorie;
-        self.nombreApprenant = vnombreApprenant;
-        self.id = vid;
-        return self;
-    }
 
     function AddToPanel() {
-        if (NombreApprenant() > 0) {
-            system.log('newww Main Module started');
-            var i = 0;
-            for (; i < StockListChoix().length; i++) {
-                system.log(selectedExamen().titre);
-                if (StockListChoix()[i].categorie == selectedCategorie() &&
-                    StockListChoix()[i].examen == selectedExamen().titre) {
-                    break;
-                }
-            }
-       
-       
-            if (i == StockListChoix().length) {
-                StockListChoix.push(new ctor(StockListChoix().length + 1, selectedCategorie(), selectedExamen().titre,
-                    NombreApprenant(), selectedExamen().id));
-
-            }
-        }
+        eds.AddToPanel(StockListChoix, NombreApprenant, selectedExamen, selectedCategorie);
     }
 
     function StockList() {
-        system.log('Main Module started');
-
-        //Save changes
-        NombreApprenant(undefined);
-        selectedCategorie(Categorie[0]);
-        ListChoix([]);
-        for (var i = 0; i < StockListChoix().length; i++) {
-            ListChoix().push(StockListChoix()[i]);
-        }
-        logger.log("success",null, 'succes', null);
+       // var categorieObservale = ko.observableArray();
+        eds.StockList(StockListChoix, ListChoix, NombreApprenant, selectedCategorie, Categorie[0]);
     }
 
     function Dismiss() {
-
-
-        selectedCategorie(Categorie[0]);
-        StockListChoix.removeAll();
-        NombreApprenant(undefined);
-
-
-        //system.log(StockListChoix([]).length + "");
-        for (var i = 0; i < ListChoix().length; i++) {
-            StockListChoix().push(ListChoix()[i]);
-        }
-        system.log(i + " " + StockListChoix().length);
-        StockListChoix.valueHasMutated();
-        system.log("valueHasMutated");
-
-
-
-       /* StockListChoix().push(new ctor(StockListChoix().length + 1, 'cat', 'exam', 'fin'));
-        StockListChoix().push*/
-
-        system.log('Fin Dismiss');
-
+        eds.Dismiss(StockListChoix, ListChoix, selectedCategorie, Categorie, NombreApprenant);
     }
 
     function deleteFromList(value) {
-        StockListChoix.remove(value);
-        system.log('deleteFromList');
+        eds.deleteFromList(StockListChoix, value);
     }
 
     //#endregion GE
@@ -170,40 +117,21 @@
     var ProfilExist = ko.observableArray();
 
     // Methods
-    function ctorProfil(vlogin, vpassword) {
-        var self = this
-        self.login = vlogin
-        self.password = vpassword
-        return self
-    }
+    
    
 
     function AddProfil() {
-
-        if (StockProfilExist().length == 0 && repeatPassword() === password()) {
-            system.log('AddProfil');
-            StockProfilExist().push(new ctorProfil(login(), password()));
-            StockProfilExist.valueHasMutated();
-        }
-       
+        ds.AddProfil(StockProfilExist, login, password, repeatPassword);
     }
 
     function deleteProfil() {
-        system.log('deleteProfil');
-        StockProfilExist().pop();
-        StockProfilExist.valueHasMutated();
-
+        ds.deleteProfil(StockProfilExist);
     }
 
     function SaveProfil() {
         //ProfilExist() may hold an old Profil so we need to clear it
         //StockProfil empty means this is the first time we enter the profil modal or we cleaned an existed profil.
-
-        system.log('SaveProfil');
-        if (ProfilExist().length > 0) { ProfilExist().pop(); }
-        if (StockProfilExist().length > 0) {
-            ProfilExist().push(StockProfilExist()[0]);
-        }
+        ds.SaveProfil(StockProfilExist, ProfilExist);       
     }
 
     function dismissProfil() {
@@ -212,15 +140,7 @@
         password(undefined);
         repeatPassword(undefined)
 
-        //cancel changes and push the existed profil in StockProfiExist ObservableArray
-        if (StockProfilExist().length > 0) { StockProfilExist().pop(); }
-        if (ProfilExist().length > 0) {
-            StockProfilExist().push(ProfilExist()[0]);
-        }
-        StockProfilExist.valueHasMutated();
-      
-
-
+        ds.dismissProfil(StockProfilExist, ProfilExist);
     }
     //#endregion GE
 

@@ -22,13 +22,16 @@ namespace PFE.Web.Controllers
         private readonly IFormationService formationService;
         private readonly IProfilService profilService;
         private readonly IFormationExamenService formationExamenService;
+        private readonly IExamenService examenService;
 
         public FormationController(IFormationService formationService,
-            IProfilService profilService, IFormationExamenService formationExamenService)
+            IProfilService profilService, IFormationExamenService formationExamenService,
+            IExamenService examenService)
         {
             this.formationService = formationService;
             this.profilService = profilService;
             this.formationExamenService = formationExamenService;
+            this.examenService = examenService;
         }
 
         // GET api/Formation
@@ -68,14 +71,19 @@ namespace PFE.Web.Controllers
             IEnumerable<FormationExamen> formationExamen = formationExamenService.GetFormationInfos(id);
             List<long> ListId = new List<long>();
             List<int> ListMaxApprenants = new List<int>();
+            List<int> ListCategorie = new List<int>();
+            List<string> ListExamensTitre = new List<string>();
 
             foreach (FormationExamen f in formationExamen)
             {
                 ListId.Add(f.ExamenID);
                 ListMaxApprenants.Add(f.MaxApprenant);
+                ListCategorie.Add(examenService.getExamenCategorie(f.ExamenID));
+                ListExamensTitre.Add(examenService.getExamenTitre(f.ExamenID));
             }
 
-            FormationVM formationVm = Mapping.MapToFormationVM(formation, profil, ListId, ListMaxApprenants);
+            FormationVM formationVm = Mapping.MapToFormationVM(formation, profil, ListId, ListMaxApprenants,
+                ListCategorie, ListExamensTitre);
 
             return formationVm;
         }

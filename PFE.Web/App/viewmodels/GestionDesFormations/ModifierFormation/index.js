@@ -1,6 +1,8 @@
-﻿define(['services/logger', 'durandal/system', 'services/validation', 'services/profilDataService'],
-    function (logger, system, validation, ds) {
+﻿define(['services/logger', 'durandal/system', 'services/validation',
+    'services/profilDataService', 'services/F_examenDataService', 'services/Helpers'],
+    function (logger, system, validation, ds, eds, helpers) {
 
+    var title = 'Modifier une formation';
 
 
     //Gestion de profil
@@ -63,43 +65,70 @@
 
 
 
+    //#region GE
+        //Gestion des examens
 
+        //Variables and Observables
 
-    //Added for update processing
-    var ListFormations = ko.observableArray(),
-        selectedFormation = ko.observable();
+    var selectedCategorie = ko.observable(),
+        selectedExamen = ko.observable(),
+        NombreApprenant = ko.observable().extend({
+            required: true,
+            digit: true,
+            validation: { validator: validation.digitValidation, message: '<= 1000 !', params: 1000 }
 
-    selectedFormation.extend({ notify: 'always' });
+        }),
+        ListChoix = ko.observableArray(),
+        StockListChoix = ko.observableArray(),
+        Categorie = ['Serveur', 'Desktop', 'Applications', 'BaseDeDonnee', 'Developpeur'],
+        listChoices = ko.observableArray(),
+        listExamen = ko.observableArray();
 
-    selectedFormation.subscribe(function (newValue) {
-        //var index = ListFormations.indexOf(newValue);
+    selectedCategorie.extend({ notify: 'always' });
 
-        url = 'api/Formation/' + newValue.id;
-        $.getJSON(url, function (formation) {
-            data.removeAll();
+    selectedCategorie.subscribe(function (newValue) {
+        var options = {
+            url: "api/Examen/Categorie/" + Categorie.indexOf(newValue),
+            type: 'get',
+            async: false
+        };
 
-            StockProfilExist.removeAll();
-            StockProfilExist.valueHasMutated();
-
-            ProfilExist.removeAll();
-            ProfilExist.valueHasMutated();
-            // system.log(data[1]);
-
-            //Copy the ViewModel Values and refresh inputs.
-            FormationVMInterface = formation;
-            data.push(new ctorFormationInterface(FormationVMInterface.Titre, FormationVMInterface.Description,
-                FormationVMInterface.NomOrganisme, FormationVMInterface.DateDebut, FormationVMInterface.DateFin));
-
-            //ProfilInterface = formation;
-            StockProfilExist.push(new ctorProfilInterface(FormationVMInterface.Login, FormationVMInterface.Password));
-            StockProfilExist.valueHasMutated();
-
-            ProfilExist.push(new ctorProfilInterface(FormationVMInterface.Login, FormationVMInterface.Password));
-            ProfilExist.valueHasMutated();
+        $.ajax(options).then(function (data) {
+            listExamen.removeAll();
+            for (Prop in data) {
+                system.log(Prop);
+                listExamen.push(new ListExamenDictionary(Prop, data[Prop]));
+            }
 
         });
-
     });
+
+        // Methods
+    function ListExamenDictionary(vid, vtitre) {
+        var self = this;
+        self.id = vid;
+        self.titre = vtitre;
+        return self;
+    }
+
+
+    function AddToPanel() {
+        eds.AddToPanel(StockListChoix, NombreApprenant, selectedExamen, selectedCategorie);
+    }
+
+    function StockList() {
+        eds.StockList(StockListChoix, ListChoix, NombreApprenant, selectedCategorie);
+    }
+
+    function Dismiss() {
+        eds.Dismiss(StockListChoix, ListChoix, selectedCategorie, Categorie, NombreApprenant);
+    }
+
+    function deleteFromList(value) {
+        eds.deleteFromList(StockListChoix, value);
+    }
+
+   //#endregion GE
 
     function ctorFormationInterface(vTitre, vDescription, vNomOrganisme, vDateDebut, vDateFin) {
         var self = this;
@@ -111,20 +140,75 @@
         return self;
     }
 
-    var FormationVMInterface = {
 
-        FormationInterface : {
-            Titre: ko.observable(),
-            Description: ko.observable(),
-            NomOrganisme: ko.observable(),
-            DateDebut: ko.observable(),
-            DateFin: ko.observable()
-        },
-        ProfilInterface: {
-            Login: ko.observable(),
-            Password: ko.observable()
-        }
+
+    //Added for update processing
+    var ListFormations = ko.observableArray(),
+        selectedFormation = ko.observable();
+
+    selectedFormation.extend({ notify: 'always' });
+
+    selectedFormation.subscribe(function (newValue) {
+
+        url = 'api/Formation/' + newValue.id;
+        $.getJSON(url, function(formation) {
+            data.removeAll();
+            StockListChoix.removeAll();
+
+            StockProfilExist.removeAll();
+            StockProfilExist.valueHasMutated();
+
+            ProfilExist.removeAll();
+            ProfilExist.valueHasMutated();
+
+            //Copy the ViewModel Values and refresh inputs.
+             FormationVMInterface = formation;
+
+             StockProfilExist.push(new ctorProfilInterface(FormationVMInterface.Login, FormationVMInterface.Password));
+             StockProfilExist.valueHasMutated();
+            
+            data.push(new ctorFormationInterface(FormationVMInterface.Titre, FormationVMInterface.Description,
+                FormationVMInterface.NomOrganisme, helpers.ToDate(FormationVMInterface.DateDebut),
+                helpers.ToDate(FormationVMInterface.DateFin)));
+          
+            ProfilExist.push(new ctorProfilInterface(FormationVMInterface.Login, FormationVMInterface.Password));
+            ProfilExist.valueHasMutated();
+
+            for (var i = 0; i < formation.ListId.length; i++) {
+                NombreApprenant(formation.ListMaxApprenants[0]);
+                selectedExamen(new eds.ctorModificationExamenIdTitre(formation.ListId[i], formation.ListExamensTitre[i]));
+                selectedCategorie(Categorie[formation.ListCategorie[i]]);
+                eds.AddToPanel(StockListChoix, NombreApprenant, selectedExamen, selectedCategorie);
+            }
+            StockListChoix.valueHasMutated();
+            StockList(StockListChoix, ListChoix, NombreApprenant, selectedCategorie, Categorie);
+
+
+            return true;
+        });
+
+    });
+
+  
+
+   var FormationVMInterface = {
+
+       Titre: ko.observable(),
+       Description: ko.observable(),
+       NomOrganisme: ko.observable(),
+       DateDebut: ko.observable(),
+       DateFin: ko.observable(),
+         
+       Login: ko.observable(),
+       Password: ko.observable()
     }
+
+
+        //Errors declaration
+        var MessageError = ko.observable();
+        function clearMessageError() {
+            MessageError(undefined);
+        }
 
 
     var data = ko.observableArray();
@@ -134,6 +218,8 @@
         ListFormations: ListFormations,
         selectedFormation: selectedFormation,
         data: data,
+        title: title,
+        Modifier: Modifier,
 
 
         
@@ -145,7 +231,26 @@
         deleteProfil: deleteProfil,
         dismissProfil: dismissProfil,
         SaveProfil: SaveProfil,
-        repeatPassword: repeatPassword
+        repeatPassword: repeatPassword,
+
+        
+        ////GE
+        Categorie: Categorie,
+        listExamen: listExamen,
+        AddToPanel: AddToPanel,
+        selectedCategorie: selectedCategorie,
+        selectedExamen: selectedExamen,
+        NombreApprenant: NombreApprenant,
+        StockListChoix: StockListChoix,
+        StockList: StockList,
+        Dismiss: Dismiss,
+        deleteFromList: deleteFromList,
+
+
+
+        //Errors
+        MessageError: MessageError,
+        clearMessageError: clearMessageError
 
     };
 
@@ -181,5 +286,132 @@
     }
 
 
+
+
+
+    function Modifier() {
+        //MessageError('')
+
+        //Validation (Just for Markup)
+       /* MessageError(undefined);
+        MessageError.valueHasMutated();
+
+        var isProfilExist = false;
+        var self = this;
+
+        if (ProfilExist().length > 0) {
+            login('valogin');
+            password('password');
+            repeatPassword('password');
+            NombreApprenant('1');
+
+
+            //Check if the profil does exist.
+
+            //url: "api/Profil/Exist?" + "Login=" + ProfilExist()[0].login + "&" + "Password=" + ProfilExist()[0].password,
+
+            var options = {
+                url: "api/Profil/Exist",
+                type: 'get',
+                data: {
+                    'Login': ProfilExist()[0].login,
+                    'Password': ProfilExist()[0].password
+                },
+                async: false
+            };
+
+
+            $.ajax(options).then(function (result) {
+
+                if (result == true) {
+                    system.log('Profil deja exist');
+                    isProfilExist = true;
+                }
+                return true;
+            });
+        }
+        system.log(isProfilExist);
+
+        //
+        vm.errors = ko.validation.group(vm);
+        if (vm.errors().length == 0 && isProfilExist == false) {
+
+            var ListExamenIds = [];
+            var ListMaxApprenants = [];
+            for (var i = 0; i < ListChoix().length; i++) {
+                ListExamenIds[i] = ListChoix()[i].id;
+                ListMaxApprenants[i] = ListChoix()[i].nombreApprenant;
+                system.log(ListChoix()[0].id);
+
+            }
+
+
+            var options = {
+                url: '/api/Formation' + ListFormations()[0].id,
+                type: 'put',
+                data: {
+                    'Login': ProfilExist()[0].login,
+                    'Password': ProfilExist()[0].password,
+                    'Titre': Titre(),
+                    'NomOrganisme': NomOrganisme(),
+                    'Description': Description(),
+                    'DateDebut': DateDebut(),
+                    'DateFin': DateFin(),
+                    'ListMaxApprenants': ListMaxApprenants,
+                    'ListId': ListExamenIds
+                }
+            };
+
+            $.ajax(options).then(querySucceed).fail(querySucceed);
+        }
+        else {
+
+            var message = "";
+
+            if (vm.errors().length > 0)
+                message += "<p class=\"text-info\">" + ".Le Formulaire contient des erreurs \n" + "</p>";
+
+            if (isProfilExist == true)
+                message += "<p class=\"text-info\">" + ".Profil deja exist" + "</p>";
+
+
+            if (ProfilExist().length == 0) {
+                message += " <p class=\"text-info\">" + ".Une Formation doit avoir un profil." + "</p>";
+                login(undefined);
+                password(undefined);
+                repeatPassword(undefined);
+                NombreApprenant(undefined);
+            }
+
+            // message += "</p>";
+            MessageError(message);
+            logger.log(null, null, "Formulaire contient des erreurs", true);
+            system.log('Le Formulaire contient des erreurs');
+        }
+
+        */
+    }
+
+    function querySucceed() {
+        logger.log(null, null, "Formation Ajouté avec succes", true);
+
+        system.log('querySucceed');
+        Titre(undefined);
+        NomOrganisme(undefined);
+        Description(undefined);
+        DateDebut(undefined);
+        DateFin(undefined);
+        NombreApprenant(undefined);
+        ListChoix.removeAll();
+        StockListChoix.removeAll();
+        ProfilExist.removeAll();
+        listExamen.removeAll();
+        login(undefined);
+        password(undefined);
+        repeatPassword(undefined);
+        StockProfilExist.removeAll();
+        return true;
+
+    }
 
 });
