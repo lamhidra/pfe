@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\helper.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\VM\FormationVM.cs" />
     <Compile Include="Helpers\VM\Mapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

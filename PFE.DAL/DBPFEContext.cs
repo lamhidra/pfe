@@ -1,5 +1,7 @@
-﻿using PFE.DAL.Configuration;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using PFE.DAL.Configuration;
 using PFE.Domain;
+using PFE.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace PFE.DAL
 {
-    public class DBPFEContext : DbContext
+    public class DBPFEContext : IdentityDbContext<ApplicationUser>
     {
         public DBPFEContext()
+            : base("DBPFEContext")
         { 
         
         }
@@ -40,6 +43,7 @@ namespace PFE.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
 
