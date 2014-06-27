@@ -77,9 +77,9 @@
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="DBPFEContext.cs" />
-    <Compile Include="Migrations\201406221507361_Migration.cs" />
-    <Compile Include="Migrations\201406221507361_Migration.Designer.cs">
-      <DependentUpon>201406221507361_Migration.cs</DependentUpon>
+    <Compile Include="Migrations\201406241534258_init-Migr.cs" />
+    <Compile Include="Migrations\201406241534258_init-Migr.Designer.cs">
+      <DependentUpon>201406241534258_init-Migr.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +96,7 @@
     <Compile Include="Repository\QuestionRepository.cs" />
     <Compile Include="Repository\ReponseRepository.cs" />
     <Compile Include="Repository\ResultatRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PFE.Domain\PFE.Domain.csproj">
@@ -108,8 +109,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201406221507361_Migration.resx">
-      <DependentUpon>201406221507361_Migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201406241534258_init-Migr.resx">
+      <DependentUpon>201406241534258_init-Migr.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

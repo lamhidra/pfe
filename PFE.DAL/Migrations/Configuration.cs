@@ -1,6 +1,9 @@
 namespace PFE.DAL.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using PFE.Domain;
+    using PFE.Domain.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -16,7 +19,43 @@ namespace PFE.DAL.Migrations
 
         protected override void Seed(PFE.DAL.DBPFEContext context)
         {
-            context.Formations.AddOrUpdate(
+            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            RoleManager<IdentityRole> RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
+            if (!RoleManager.RoleExists("Administrator"))
+            {
+                RoleManager.Create(new IdentityRole("Administrator"));
+
+            }
+
+            if (!RoleManager.RoleExists("Visiteur"))
+            {
+                RoleManager.Create(new IdentityRole("Visiteur"));
+
+            }
+
+            if (!RoleManager.RoleExists("Formateur"))
+            {
+                RoleManager.Create(new IdentityRole("Formateur"));
+
+            }
+
+            if (!RoleManager.RoleExists("Formation"))
+            {
+                RoleManager.Create(new IdentityRole("Formation"));
+
+            }
+
+            if (UserManager.FindByName("admin") == null)
+            {
+                var user = new ApplicationUser() { UserName = "admin", Email = "admin@mydomain.com", EmailConfirmed = true };
+                var result = UserManager.Create(user, "admin1234");
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "Administrator");
+                }
+            }
+            /*context.Formations.AddOrUpdate(
                 f => f.Titre,
                 new Formation
                 {
@@ -59,7 +98,7 @@ namespace PFE.DAL.Migrations
                     Titre = "formation3"
                 }
 
-            );
+            );*/
 
             context.SaveChanges();
         }
