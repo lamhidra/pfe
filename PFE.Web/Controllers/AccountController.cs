@@ -26,6 +26,7 @@ using PFE.Domain.Models;
 using PFE.Web.Results;
 using PFE.Web.Providers;
 using PFE.Web.Core.Helpers;
+using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
@@ -34,7 +35,7 @@ namespace PFE.Web.Controllers
 	/// 1. Resource owner password grant for users with local accounts
 	/// 2. Implicit grant for authenticating with social providers
 	/// </summary>
-	[RoutePrefix("api/Account")]
+	[RoutePrefix("api/account")]
 	public class AccountController : ApiController
 	{
 		private const string LocalLoginProvider = "Local";
@@ -51,17 +52,16 @@ namespace PFE.Web.Controllers
 				usermanager = value;
 			}
 		}
-		IUnitOfWork UnitOfwork { get; set; }
-		ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; set; }
+        private readonly ISecureDataFormat<AuthenticationTicket> AccessTokenFormat;
+        private readonly IUserService userService;
 
 		/// <summary>
 		/// ctor
 		/// </summary>
-		public AccountController(IUnitOfWork unitofwork,                                  
-								 ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(IUserService userService)
 		{
-			this.UnitOfwork = unitofwork;
-			this.AccessTokenFormat = accessTokenFormat;
+            this.userService = userService;
+            this.AccessTokenFormat = Startup.OAuthOptions.AccessTokenFormat;
 		}
 
         /// Ayoub : External Auth : N° 2
@@ -137,7 +137,7 @@ namespace PFE.Web.Controllers
 			};
 
 			string body = ViewRenderer.RenderView("~/Views/Mailer/NewAccount.cshtml", notification);
-			await UserManager.SendEmailAsync(user.Id, "DurandalAuth account confirmation", body);
+            await UserManager.SendEmailAsync(user.Id, "Confirmation du compte", body);
 			
 			return Ok();
 		}
@@ -677,13 +677,13 @@ namespace PFE.Web.Controllers
 			return Ok();
 		}
 
-		/*[HttpGet]
+		[HttpGet]
 		[Authorize(Roles="Administrator")]
 		public IEnumerable<UserProfileViewModel> GetUsers()
 		{
-			var users = UnitOfwork.UserProfileRepository.All();
+            var users = userService.getUsers();
 			return users.Select(user => new UserProfileViewModel { UserName = user.UserName }).ToList();
-		}*/
+		}
 
 		protected override void Dispose(bool disposing)
 		{

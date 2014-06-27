@@ -1,43 +1,86 @@
-﻿define(['durandal/system', 'plugins/router', 'services/logger'],
-    function (system, router, logger) {
-        var shell = {
-            activate: activate,
-            router: router
-        };
+﻿define(['durandal/system', 'plugins/router', 'services/appsecurity', 'services/errorhandler'],
+    function (system, router, appsecurity, errorhandler) {
 
-        return shell;
 
-        //#region Internal Methods
-        function activate() {
-            return boot();
-        }
+    var viewmodel = {
 
-        function boot() {
+        attached : function() {
+            $(document).find("footer").show();
+        },
 
-            router.on('router:route:not-found', function (fragment) {
-                logError('No Route Found', fragment, true);
-            });
+        activate: function () {
+                        var self = this;            
+                       
+                        system.log("shell: activate");
+                        
+                        //configure routing
+                        router.makeRelative({ moduleId: 'viewmodels' });
 
-            var routes = [
-                { route: ['', 'application*module'], moduleId: 'index', title: 'Application', nav: 1, hash: '#application' },
-                { route: 'testMarkup', moduleId: 'testMarkup', title: 'testMarkup', nav: 2 }];
-               // { route: 'application*module', moduleId: 'viewmodels/index', title: 'Home', nav: 2, hash: '#application' }];
-                /*{ route: 'formations', moduleId: 'formations', title: 'Formations', nav: 2 },
-                { route: 'AddFormation', moduleId: 'AddFormation', title: 'AddFormation', nav: 3 },
-                { route: 'Annonces', moduleId: 'Annonces', title: 'aAnnonces', nav: 4 }];*/
-            // makeRelative({ moduleId: 'viewmodels' }).// router will look here for viewmodels by convention
+                        // If the route has the authorize flag and the user is not logged in => navigate to login view      
+                        // If the route has the confirmed flag and the user's email is not confirmed => navigate to login view and display confirmation warning
+                        router.guardRoute = function (instance, instruction) {
+                            if (sessionStorage["redirectTo"]) {
+                                var redirectTo = sessionStorage["redirectTo"]
+                                sessionStorage.removeItem("redirectTo");
+                                return redirectTo;
+                            }
 
-            return router.makeRelative({ moduleId: 'viewmodels' }).map(routes)            // Map the routes
-                .buildNavigationModel().activate(); // Finds all nav routes and readies them
-                           // Activate the router
-        }
+                            if (instruction.config.authorize) {
+                                if (typeof (appsecurity.userInfo()) !== 'undefined') {
+                                    if (appsecurity.isUserInRole(instruction.config.authorize)) {
+                                        if (instruction.config.confirmed) {
+                                            if (appsecurity.userInfo().isEmailConfirmed()) {
+                                                return true;
+                                            } else {
+                                                appsecurity.showConfirmationWarning(true);
+                                                return "/account/login?returnUrl=" + encodeURIComponent(instruction.fragment);
+                                            }
+                                        } else {
+                                            return true;
+                                        }
+                                    } else {
+                                        return "/account/login?returnUrl=" + encodeURIComponent(instruction.fragment);
+                                    }
+                                } else {
+                                    return "/account/login?returnUrl=" + encodeURIComponent(instruction.fragment);
+                                }
+                            } else {
+                                return true;
+                            }
+                        };
+						
+                        // Config Routes
+                        // Routes with authorize flag will be forbidden and will redirect to login page
+                        // As this is javascript and is controlled by the user and his browser, the flag is only a UI guidance. You should always check again on 
+                        // server in order to ensure the resources travelling back on the wire are really allowed
 
-        function log(msg, data, showToast) {
-            logger.log(msg, data, system.getModuleId(shell), showToast);
-        }
+                        return router.map([
+                            // Nav urls
+                            { route: ['','home/index'],                       moduleId: 'home/index',                        title: 'Home',                        nav: true, hash : "#home/index"    },
+                            { route: 'home/help',                             moduleId: 'home/help',                         title: 'Help',                        nav: true, hash : "#home/help" },
+                            { route: 'home/about',                            moduleId: 'home/about',                        title: 'About',                       nav: true, hash : "#home/about" },
+                            { route: 'notfound',                              moduleId: 'notfound',                          title: 'Not found',                   nav: false },
+                                
+                            // Admin panel url
+                            { route: 'admin/panel',                           moduleId: 'admin/panel',                       title: 'Admin Panel',                 nav: false, hash : "#admin/panel",  authorize: ["Administrator"] } ,
 
-        function logError(msg, data, showToast) {
-            logger.logError(msg, data, system.getModuleId(shell), showToast);
-        }
-        //#endregion
-    });
+                            // Account Controller urls
+                            { route: 'account/login',                         moduleId: 'account/login',                     title: 'Login',                       nav: false, hash : "#account/login" },
+                            { route: 'account/externalloginconfirmation',     moduleId: 'account/externalloginconfirmation', title: 'External login confirmation', nav: false, hash : "#account/externalloginconfirmation" },
+                            { route: 'account/externalloginfailure',          moduleId: 'account/externalloginfailure',      title: 'External login failure',      nav: false, hash : "#account/externalloginfailure" },
+                            { route: 'account/register',                      moduleId: 'account/register',                  title: 'Register',                    nav: false, hash : "#account/register" },
+                            { route: 'account/manage',                        moduleId: 'account/manage',                    title: 'Manage account',              nav: false, hash:  "#account/manage", authorize: ["User", "Administrator"] },
+                            { route: 'account/registrationcomplete',          moduleId: 'account/registrationcomplete',      title: 'Registration complete',       nav: false, hash:  "#account/registrationcomplete" },
+                            { route: 'account/forgotpassword',                moduleId: 'account/forgotpassword',            title: 'Forgot password',             nav: false, hash:  "#account/forgotpassword" },
+                            { route: 'account/resetpassword',                 moduleId: 'account/resetpassword',             title: 'Reset password',              nav: false, hash:  "#account/resetpassword" }
+                        ])
+                        .buildNavigationModel()
+                        .mapUnknownRoutes("notfound","notfound")
+                        .activate({ pushState : true });
+                    }
+    };
+
+    errorhandler.includeIn(viewmodel);
+
+    return viewmodel;
+});

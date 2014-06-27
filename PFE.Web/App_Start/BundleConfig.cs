@@ -18,22 +18,30 @@ namespace PFE.Web
                 .Include("~/scripts/knockout-{version}.debug.js")
                 .Include("~/scripts/toastr.js")
                 .Include("~/scripts/Q.js")
-                .Include("~/scripts/breeze.debug.js")
+                .Include("~/scripts/jquery.hammer.min.js")
                 .Include("~/scripts/bootstrap.js")
+                .Include("~/scripts/Stashy.js")
                 .Include("~/scripts/moment.js")
                 .Include("~/scripts/knockout.validation.js")
+                .Include("~/scripts/zen-form.js")
               );
 
             bundles.Add(
               new StyleBundle("~/Content/css")
                 .Include("~/Content/ie10mobile.css")
-                .Include("~/Content/bootstrap.css")
+                .Include("~/Content/bootstrap-whiteplum.css")
                 .Include("~/Content/font-awesome.css")
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/toastr.css")
-                .Include("~/Content/app.css")
                 .Include("~/Content/Site.css")
+                .Include("~/Content/Stashy.js")
+                .Include("~/Content/zen-form.css")
            );
+
+            bundles.Add(
+       new StyleBundle("~/Content/custom")
+         .Include("~/Content/app.css")
+       );
            /* bundles.Add(
              new ScriptBundle("~/Scripts/vendor")
                .Include("~/Scripts/jquery-{version}.js")

@@ -15,6 +15,9 @@ namespace TestBlanc.Web.App_Start
     using PFE.Service;
     using Ninject.Web.WebApi;
     using PFE.Service.Services;
+    using Microsoft.Owin.Security;
+    using PFE.Web;
+    using PFE.Web.SEO;
 
     public static class NinjectWebCommon 
     {
@@ -78,6 +81,7 @@ namespace TestBlanc.Web.App_Start
             kernel.Bind<IExamenRepository>().To<ExamenRepository>();
             kernel.Bind<IApprenantRepository>().To<ApprenantRepository>();
             kernel.Bind<IProfilRepository>().To<ProfilRepository>();
+            kernel.Bind<IUserRepository>().To<UserRepository>();
 
 
             //Services
@@ -86,8 +90,11 @@ namespace TestBlanc.Web.App_Start
             kernel.Bind<IExamenService>().To<ExamenService>();
             kernel.Bind<IProfilService>().To<ProfilService>();
             kernel.Bind<IFormationExamenService>().To<FormationExamenService>();
+            kernel.Bind<IUserService>().To<UserService>();
 
-
+            
+            //Others
+            kernel.Bind<ISnapshot>().To<Snapshot>();
         }        
     }
 

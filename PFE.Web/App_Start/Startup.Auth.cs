@@ -22,7 +22,7 @@ namespace PFE.Web
             PublicClientId = "self";
 
             UserManagerFactory = () => new ApplicationUserManager(new UserStore<ApplicationUser>(new DBPFEContext()));
-
+          
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 //Exposes Token endpoint

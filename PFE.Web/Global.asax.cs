@@ -14,10 +14,20 @@ namespace PFE.Web
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+
+
+            GlobalConfiguration.Configure(RouteConfig.RegisterWebApiRoutes);
+            RouteConfig.RegisterMVCRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AuthConfig.RegisterMVCAuth(GlobalFilters.Filters);
+            AuthConfig.RegisterWebApiAuth(GlobalConfiguration.Configuration);
+            /*GlobalConfiguration.Configure(RouteConfig.RegisterWebApiRoutes);
+            RouteConfig.RegisterMVCRoutes(RouteTable.Routes);
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);*/
 
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
 
