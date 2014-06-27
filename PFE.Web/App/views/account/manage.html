@@ -1,0 +1,99 @@
+<div id="manage">
+    <div class="container">
+        <div class="page-header">
+            <h1>Gérez votre compte   <small>changer les mots de passe et de g&eacuterer vos comptes externes</small></h1>
+        </div>
+        <div class="row">
+            <section class="col-md-6">
+                <div data-bind="visible : hasLocalPassword()">
+                    <div data-bind="with: changePassword">
+                        <form role="form">
+                            <h2>Changez votre mot de passe</h2>
+                            <hr />
+                            <div class="form-group" data-bind="validationElement: oldPassword">
+                                <label for="ChangePasswordOldPassword" class="control-label">Ancien mot de passe</label>
+                                <input type="password" id="ChangePasswordOldPassword" class="form-control" data-bind="value: oldPassword" />                                
+                            </div>
+                            <div class="form-group" data-bind="validationElement: newPassword">
+                                <label for="ChangePasswordNewPassword" class="control-label">Nouveau mot de passe</label>
+                                <input type="password" id="ChangePasswordNewPassword" class="form-control" data-bind="value: newPassword" />
+                            </div>
+                            <div class="form-group" data-bind="validationElement: confirmPassword">
+                                <label for="ChangePasswordConfirmPassword" class="control-label">Confirmez le nouveau mot de passe</label>
+                                <input type="password" id="ChangePasswordConfirmPassword" class="form-control" data-bind="value: confirmPassword" />
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" data-bind="click: change, disable: changing">changer le mot de passe</button>
+                                <button type="reset" class="btn btn-default">R&eacuteinitialiser</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div data-bind="visible : !hasLocalPassword()">
+                    <div data-bind="with: setPassword">
+                        <p class="lead">Vous n'avez pas de mot de passe local pour ce site. Ajouter un compte local en entrant un mot de passe dans le pr&eacutesent formulaire et vous n'aurez plus besoin de toute connexion externe</p>
+                        <form class="form-horizontal" role="form">
+                            <h2>Créez un compte local</h2>
+                            <hr />
+                            <div class="form-group" data-bind="validationElement: newPassword">
+                                <label for="SetPasswordNewPassword" class="control-label">Nouveau mot de passe</label>
+                                <input type="password" id="SetPasswordNewPassword" class="form-control" data-bind="value: newPassword" />                                
+                            </div>
+                            <div class="form-group" data-bind="validationElement: confirmPassword">
+                                <label for="SetPasswordConfirmPassword" class="control-label">Confirmez le nouveau mot de passe</label>
+                                <input type="password" id="SetPasswordConfirmPassword" class="form-control" data-bind="value: confirmPassword" />                                
+                            </div>
+                            <div class="form-group">
+                               <button type="submit" class="btn btn-primary" data-bind="click: set, disable: setting">Cr&eacuteez un compte local</button>                               
+                                <button type="reset" class="btn btn-default">R&eacuteinitialiser</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <hr />
+                    <p>Cliquez sur le bouton ci-dessous si vous souhaitez supprimer votre compte. Soyez prudent parce que cette action est permanente.</p>
+                    <a href="#" class="btn btn-danger" data-bind="click:deleteAccount">Supprimer le compte</a>
+                </div>
+                <hr />
+          </section>
+            <section class="col-md-5 col-md-offset-1">
+                <div data-bind="if: userLogins().length > 0">
+                    <h2>Comptes ext&eacuterieurs enregistr&eacutes</h2>
+                    <table class="table">
+                        <tbody data-bind="foreach: userLogins">
+                            <tr>
+                                <td class="lead" data-bind="text: loginProvider"></td>
+                                <td>
+                                    <div data-bind="if: $parent.canRemoveLogin">
+                                        <form>
+                                            <div>
+                                                <button type="submit" class="btn btn-danger pull-right" data-bind="attr: { title: 'Remove this ' + loginProvider() + ' credential from your account' }, click: remove, disable: removing"><i class="fa fa-trash-o"></i>   Remove</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <span data-bind="if: !$parent.canRemoveLogin()">&nbsp;</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h2>Ajouter un nouveau compte externe</h2>
+                <hr />
+                <div data-bind="visible: !hasExternalLogin()">
+                    <p class="lead">
+                      Il n'y a pas de services d'authentification externes configur&eacutes.                    
+                    </p>
+                </div>
+                <div data-bind="visible: hasExternalLogin">
+                    <div class="list-group" data-bind="foreach: externalLoginProviders">
+                        <a href="#" class="list-group-item lead" data-bind="click: login, attr: { 'data-provider': name,  title: 'Log in using your ' + name() + ' account'}">
+                            <i data-bind="css: socialIcon($data)"></i>
+                            <span data-bind="text: name"></span>
+                        </a>
+                    </div>
+                </div>                
+            </section>
+        </div>
+    </div>
+</div>

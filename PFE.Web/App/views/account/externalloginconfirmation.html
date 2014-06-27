@@ -1,0 +1,33 @@
+<div id="externalloginconfirmation">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="text-center">Confirmation de connexion externe  <small>confirmer votre nom d'utilisateur et le mail interne pour ce site</small></h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-7">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    Vous avez authentifi&eacute<strong> avec succ&egraves</strong> avec <span data-bind="text: loginProvider"></span>.
+                    S'il vous pla&acirct entrer un nom d'utilisateur et votre email pour ce site et cliquez sur le bouton de confirmation 
+                    pour terminer l'inscription.
+                </div>
+                <form data-bind="submit: confirmexternalaccount">            
+                    <div class="page-header">
+                        <h4>Associez votre <span data-bind="text: loginProvider"></span> compte</h4>
+                    </div>    
+                    <div class="form-group" data-bind="validationElement: userName">
+                        <label class="control-label" for="UserName">Nom d'utilisateur</label>        
+                        <input class="form-control" type="text" data-bind="value: userName" placeholder="User name">        
+                    </div>
+                    <div class="form-group" data-bind="validationElement: email">
+                        <label class="control-label" for="Email">Email</label>    
+                        <input class="form-control" type="text" data-bind="value: email" placeholder="Email">    
+                    </div>
+                    <div class="panel-footer">
+                        <button type="submit" class="btn btn-primary" >confirmer votre compte</button>    
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

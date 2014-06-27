@@ -1,0 +1,29 @@
+﻿@model PFE.Web.Models.AccountNotificationModel
+@{
+    Layout = "OneColumn_Layout.cshtml";
+}
+<repeater>
+    <layout label="Text only">
+        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                <tr>
+                    <td class="w580" width="580">
+                        <p align="left" class="article-title"><singleline label="Title">La v&eacuterification du compte</singleline></p>
+                        <div align="left" class="article-content">
+                            <multiline label="Description">
+                                <p>
+                                    Hello <b>@Model.DisplayName</b>,
+                                </p>
+                                <p>
+                                    Votre compte a &eacutet&eacute cr&eacute&eacute avec succ&eacutes, mais vous avez encore un pas de plus.<br />
+                                    Click <a href="@Model.Url"> Ici </a>to v&eacuterifier votre compte.
+                                </p>
+                            </multiline>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td class="w580" width="580" height="10"></td></tr>
+            </tbody>
+        </table>
+    </layout>
+</repeater>
