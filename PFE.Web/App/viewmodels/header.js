@@ -5,6 +5,19 @@
 
             router: router,
 
+            userHeader: ko.computed(function () {
+                return ko.utils.arrayFilter(router.navigationModel(), function (route) {
+                    return route.type == 'User';
+                });
+            }),
+
+            adminHeader: ko.computed(function () {
+                return ko.utils.arrayFilter(router.navigationModel(), function (route) {
+                    return route.type == 'Admin';
+                });
+            }),
+
+
             appsecurity: appsecurity,
 
             logout: function () {

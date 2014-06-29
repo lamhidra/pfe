@@ -95,7 +95,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 			}).done(function (data) {
 				self.changing(false);
 				reset();
-				logger.logSuccess("Password changed", null, null, true);
+				logger.logSuccess("Mot de passe modifi&eacute", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
 		    .fail(function () {
@@ -108,11 +108,11 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
         system.log("manage: RemoveLoginViewModel");
 
 		// Private state
-		var self = this,
-			providerKey = ko.observable(data.providerKey);
+        var self = this,
+			providerKey = ko.observable(data.ProviderKey);
 
 		// Data
-		self.loginProvider = ko.observable(data.loginProvider);
+		self.loginProvider = ko.observable(data.LoginProvider);
 
 		// Other UI state
 		self.removing = ko.observable(false);
@@ -129,7 +129,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 			}).done(function (data) {
 			    self.removing(false);
 			    userLogins.remove(self);
-			    logger.logSuccess("Login removed succesfully", null, null, true);
+			    logger.logSuccess("Connexion retir&eacute avec succ&egravess", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
             .fail(function () {
@@ -171,7 +171,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 					loginProvider: localLoginProvider(),
 					providerKey: userName()
 				}, userLogins));
-				logger.logSuccess("Password set successfully", null, null, true);
+				logger.logSuccess("Mot de passe r&eacutegl&eacute avec succ&egraves", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
 			.fail(function () {
@@ -222,7 +222,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 	        var self = this;
 	        return system.defer(function (dfd) {
 	            if (externalError !== "null" || externalAccessToken === null) {
-	                logger.logError("External login error", null, null, true);
+	                logger.logError("Erreur de connexion externe", null, null, true);
 	                dfd.resolve();
 	            } else {
 	                appsecurity.addExternalLogin({
@@ -257,6 +257,8 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 
 	    canRemoveLogin: canRemoveLogin,
 
+	    appsecurity: appsecurity,
+
 	    initialize: function () {
 	        system.log("manage: addExternalLogin");
 	        var self = this;
@@ -271,6 +273,8 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
                             self.userName(data.UserName);
 
                             self.localLoginProvider(data.LocalLoginProvider);
+                            system.log("manage: addExternalLogin : LocalLoginProvider : " + data.LocalLoginProvider);
+
                             self.userLogins.removeAll();
 
                             for (var i = 0; i < data.Logins.length; i++) {
@@ -283,7 +287,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
                                 self.externalLoginProviders.push(new AddExternalLoginProviderViewModel(data.ExternalLoginProviders[i]));
                             }
                         } else {
-                            logger.logError("Error retrieving user account information", null, null, true);
+                            logger.logError("Erreur de r&eacutecup&eacuteration des informations de compte d'utilisateur", null, null, true);
                         }
                         self.loading(false);
                     })
@@ -324,9 +328,9 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 	        var self = this;
 	        system.log("manage: deleteAccount");
 
-	        return app.showMessage("The account will be removed permanently", "Are you sure?", ['Yes', 'No'])
+	        return app.showMessage("Le compte sera d&eacutefinitivement supprim&eacute", "Etes-vous s&ucircr?", ['Oui', 'Non'])
                         .then(function (option) {
-                            if (option === 'Yes') {
+                            if (option === 'Oui') {
                                 appsecurity.deleteAccount()
                                     .done(function () {
                                         appsecurity.logout()

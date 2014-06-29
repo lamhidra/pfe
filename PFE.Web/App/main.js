@@ -19,7 +19,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'services/app
 		system.debug(true);
 		//>>excludeEnd("build");
 
-		app.title = 'Durandal Auth';
+		app.title = 'DynIT';
 
 		//specify which plugins to install and their configuration
 		app.configurePlugins({

@@ -200,7 +200,7 @@ namespace PFE.Web.Controllers
 				};
 
 				string body = ViewRenderer.RenderView("~/Views/Mailer/PasswordReset.cshtml", notification);
-				await UserManager.SendEmailAsync(user.Id, "DurandalAuth reset password", body);
+				await UserManager.SendEmailAsync(user.Id, "DynIt: réinitiliser votre mot de passe", body);
 				
 				return Ok();
 			}
@@ -317,14 +317,6 @@ namespace PFE.Web.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				return BadRequest(ModelState);
-			}
-
-			// Cannot change passwords for test users
-			// Remove following lines for real usage
-			if (User.IsInRole("Administrator") || User.Identity.GetUserName() == "user")
-			{
-				ModelState.AddModelError("Unable to change the password", "Cannot change the admin password in this demo app. Remove lines in ChangePassword (AccountController) action for real usage");
 				return BadRequest(ModelState);
 			}
 
@@ -593,7 +585,7 @@ namespace PFE.Web.Controllers
 
             ApplicationUser justCreatedUser = await UserManager.FindByNameAsync(model.UserName);
 
-			IdentityResult roleResult = await UserManager.AddToRoleAsync(justCreatedUser.Id, "User");
+			IdentityResult roleResult = await UserManager.AddToRoleAsync(justCreatedUser.Id, "Visiteur");
 
 			IHttpActionResult addRoleResult = GetErrorResult(roleResult);
 
@@ -665,7 +657,7 @@ namespace PFE.Web.Controllers
 
             ApplicationUser justCreatedUser = await UserManager.FindByNameAsync(model.UserName);
 
-            IdentityResult roleResult = await UserManager.AddToRoleAsync(justCreatedUser.Id, "User");
+            IdentityResult roleResult = await UserManager.AddToRoleAsync(justCreatedUser.Id, "Visiteur");
 
             IHttpActionResult addRoleResult = GetErrorResult(roleResult);
 
@@ -678,7 +670,7 @@ namespace PFE.Web.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles="Administrator")]
+		[Authorize(Roles="Administrateur")]
 		public IEnumerable<UserProfileViewModel> GetUsers()
 		{
             var users = userService.getUsers();

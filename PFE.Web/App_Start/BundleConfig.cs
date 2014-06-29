@@ -16,13 +16,13 @@ namespace PFE.Web
               new ScriptBundle("~/scripts/vendor")
                 .Include("~/scripts/jquery-{version}.js")
                 .Include("~/scripts/knockout-{version}.debug.js")
+                .Include("~/scripts/knockout.validation.js")
+                .Include("~/scripts/bootstrap.js")
+                .Include("~/scripts/jquery.hammer.min.js")
+                .Include("~/scripts/Stashy.js")
                 .Include("~/scripts/toastr.js")
                 .Include("~/scripts/Q.js")
-                .Include("~/scripts/jquery.hammer.min.js")
-                .Include("~/scripts/bootstrap.js")
-                .Include("~/scripts/Stashy.js")
                 .Include("~/scripts/moment.js")
-                .Include("~/scripts/knockout.validation.js")
                 .Include("~/scripts/zen-form.js")
               );
 
@@ -34,7 +34,7 @@ namespace PFE.Web
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/toastr.css")
                 .Include("~/Content/Site.css")
-                .Include("~/Content/Stashy.js")
+                .Include("~/Content/Stashy.css")
                 .Include("~/Content/zen-form.css")
            );
 

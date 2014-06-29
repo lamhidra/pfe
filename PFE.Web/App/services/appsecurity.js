@@ -244,11 +244,11 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 			var self = this,
 				isuserinrole = false;
 
-			$.each(roles, function(key, value) {
-				if (self.userInfo().roles.indexOf(value) !== -1) {
-					isuserinrole = true;
-				}
-			});
+                $.each(roles, function(key, value) {
+				    if (self.userInfo().roles.indexOf(value) !== -1) {
+					    isuserinrole = true;
+			        }
+                });
 
 			return isuserinrole;
 		},
@@ -502,7 +502,7 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 
 					self.getUserInfo()
 						.done(function (data) {
-							if (data.userName) {
+							if (data.UserName) {
 								self.setAuthInfo(data.UserName, data.Roles, data.IsEmailConfirmed);
 								sessionStorage["redirectTo"] = "account/manage?externalAccessToken=" + externalAccessToken + "&externalError=" + externalError;
 							}

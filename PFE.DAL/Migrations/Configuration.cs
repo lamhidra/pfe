@@ -22,9 +22,9 @@ namespace PFE.DAL.Migrations
             UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             RoleManager<IdentityRole> RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            if (!RoleManager.RoleExists("Administrator"))
+            if (!RoleManager.RoleExists("Administrateur"))
             {
-                RoleManager.Create(new IdentityRole("Administrator"));
+                RoleManager.Create(new IdentityRole("Administrateur"));
 
             }
 
@@ -37,13 +37,11 @@ namespace PFE.DAL.Migrations
             if (!RoleManager.RoleExists("Formateur"))
             {
                 RoleManager.Create(new IdentityRole("Formateur"));
-
             }
 
             if (!RoleManager.RoleExists("Formation"))
             {
                 RoleManager.Create(new IdentityRole("Formation"));
-
             }
 
             if (UserManager.FindByName("admin") == null)
@@ -52,7 +50,16 @@ namespace PFE.DAL.Migrations
                 var result = UserManager.Create(user, "admin1234");
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, "Administrator");
+                    UserManager.AddToRole(user.Id, "Administrateur");
+                }
+            }
+            if (UserManager.FindByName("formateur1") == null)
+            {
+                var user = new ApplicationUser() { UserName = "formateur1", Email = "formateur@formateur.com", EmailConfirmed = true };
+                var result = UserManager.Create(user, "formateur123");
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "Formateur");
                 }
             }
             /*context.Formations.AddOrUpdate(

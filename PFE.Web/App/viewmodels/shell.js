@@ -56,23 +56,40 @@
 
                         return router.map([
                             // Nav urls
-                            { route: ['','home/index'],                       moduleId: 'home/index',                        title: 'Home',                        nav: true, hash : "#home/index"    },
-                            { route: 'home/help',                             moduleId: 'home/help',                         title: 'Help',                        nav: true, hash : "#home/help" },
-                            { route: 'home/about',                            moduleId: 'home/about',                        title: 'About',                       nav: true, hash : "#home/about" },
+                            { route: ['', 'home/index'], moduleId: 'home/index', title: 'Home',  type: 'User',  nav: true, hash: "#home/index" },
+                            { route: 'home/help', moduleId: 'home/help', title: 'Help', type: 'User', nav: true, hash: "#home/help" },
+                            { route: 'home/about', moduleId: 'home/about', title: 'About', type: 'User', nav: true, hash: "#home/about" },
                             { route: 'notfound',                              moduleId: 'notfound',                          title: 'Not found',                   nav: false },
                                 
                             // Admin panel url
-                            { route: 'admin/panel',                           moduleId: 'admin/panel',                       title: 'Admin Panel',                 nav: false, hash : "#admin/panel",  authorize: ["Administrator"] } ,
+                            { route: 'admin/panel',                           moduleId: 'admin/panel',                       title: 'Admin Panel',                 nav: false, hash : "#admin/panel",  authorize: ["Administrateur"] } ,
 
                             // Account Controller urls
                             { route: 'account/login',                         moduleId: 'account/login',                     title: 'Login',                       nav: false, hash : "#account/login" },
                             { route: 'account/externalloginconfirmation',     moduleId: 'account/externalloginconfirmation', title: 'External login confirmation', nav: false, hash : "#account/externalloginconfirmation" },
                             { route: 'account/externalloginfailure',          moduleId: 'account/externalloginfailure',      title: 'External login failure',      nav: false, hash : "#account/externalloginfailure" },
                             { route: 'account/register',                      moduleId: 'account/register',                  title: 'Register',                    nav: false, hash : "#account/register" },
-                            { route: 'account/manage',                        moduleId: 'account/manage',                    title: 'Manage account',              nav: false, hash:  "#account/manage", authorize: ["User", "Administrator"] },
-                            { route: 'account/registrationcomplete',          moduleId: 'account/registrationcomplete',      title: 'Registration complete',       nav: false, hash:  "#account/registrationcomplete" },
-                            { route: 'account/forgotpassword',                moduleId: 'account/forgotpassword',            title: 'Forgot password',             nav: false, hash:  "#account/forgotpassword" },
-                            { route: 'account/resetpassword',                 moduleId: 'account/resetpassword',             title: 'Reset password',              nav: false, hash:  "#account/resetpassword" }
+                            {
+                                route: 'account/manage', moduleId: 'account/manage', title: 'Manage account', nav: false, hash: "#account/manage",
+                                authorize: ["Visiteur", "Administrateur", "Formateur"]
+                            },
+                            {
+                                route: 'account/registrationcomplete', moduleId: 'account/registrationcomplete', title: 'Registration complete', nav: false, hash: "#account/registrationcomplete",
+                                authorize: ["Visiteur", "Administrateur", "Formateur"]
+                            },
+                            {
+                                route: 'account/forgotpassword', moduleId: 'account/forgotpassword', title: 'Forgot password', nav: false, hash: "#account/forgotpassword"
+                            },
+                            {
+                                route: 'account/resetpassword', moduleId: 'account/resetpassword', title: 'Reset password', nav: false, hash: "#account/resetpassword",
+                                authorize: ["Visiteur", "Administrateur", "Formateur"]
+                            },
+
+                            //Application Core urls
+                            {
+                                route: ['core/application*module'], moduleId: 'core/index', title: 'Application', type: 'Admin', nav: true, hash: '#core/application',
+                                authorize: ["Administrateur", "Formateur"]
+                            }
                         ])
                         .buildNavigationModel()
                         .mapUnknownRoutes("notfound","notfound")
