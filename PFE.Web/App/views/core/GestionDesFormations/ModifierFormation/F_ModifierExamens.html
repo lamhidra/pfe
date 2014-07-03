@@ -14,26 +14,26 @@
             <form>
                 <div class="form-inline">
                     <p>
-                        <label for="Titre">Catégories :</label>
-                        <select data-bind="options: Categorie, value:selectedCategorie" class="form-control"></select>
+                        <label for="categorie">Catégories :</label>
+                        <select data-bind="options: categorie, value:selectedCategorie" class="form-control"></select>
                     </p>
                 </div>
 
                 <div class="form-inline">
                     <p>
-                        <label for="Titre">examens :</label>
+                        <label for="examens">examens :</label>
                         <select data-bind="options:listExamen,optionsText:'titre', value:selectedExamen " class="form-control"></select>
                     </p>
                 </div>
                     <div class="form-inline">
                         <p>
-                            <label for="Titre">Nombre Apprenants :</label>
-                            <input data-bind="value:NombreApprenant" class="form-control" />
+                            <label for="nombreApprenant">Nombre Apprenants :</label>
+                            <input data-bind="value:nombreApprenant" class="form-control" />
                         </p>
                     </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bind="click: AddToPanel">Add</button>
+                    <button type="button" class="btn btn-success" data-bind="click: AddToPanel">Ajouter</button>
                 </div>
 
                 <div>
@@ -45,12 +45,12 @@
                                 <th>Nombre Apprenant</th>
                             </tr>
                         </thead>
-                        <tbody data-bind="foreach: StockListChoix">
+                        <tbody data-bind="foreach: stockListChoix">
                             <tr>
                                 <td data-bind="text: categorie"></td>
                                 <td data-bind="text: examen"></td>
                                 <td data-bind="text: nombreApprenant"></td>
-                                <td><button class="close" data-bind="click: $root.deleteFromList, value:$root.StockListChoix() ">&times;</button></td>
+                                <td><button class="close" data-bind="click: $root.DeleteFromList, value:$root.stockListChoix() ">&times;</button></td>
                             </tr>
                         </tbody>
 
@@ -58,14 +58,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: Dismiss">Close</button>
-                    <button type="button" class="btn btn-primary" data-bind="click: StockList">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: Dismiss">Fermer</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-bind="click: StockList">Sauvegarder les changements</button>
                 </div>
 
             </form>
         </div>
-        <!--#endregion -->
-        <!--#region footer  -->
-        <!--#endregion -->
     </div>
 </div>

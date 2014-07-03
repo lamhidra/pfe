@@ -16,6 +16,8 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
+    //[Authorize(Roles = "Administrateur, Formateur")]
+    [AllowAnonymous]
     public class FormationController : ApiController
     {
 
@@ -67,7 +69,6 @@ namespace PFE.Web.Controllers
         public FormationVM GetFormation(int id)
         {
             Formation formation = formationService.GetFormationById(id);
-            Profil profil = profilService.GetFormationProfil(id);
             IEnumerable<FormationExamen> formationExamen = formationExamenService.GetFormationInfos(id);
             List<long> ListId = new List<long>();
             List<int> ListMaxApprenants = new List<int>();
@@ -82,23 +83,24 @@ namespace PFE.Web.Controllers
                 ListExamensTitre.Add(examenService.getExamenTitre(f.ExamenID));
             }
 
-            FormationVM formationVm = Mapping.MapToFormationVM(formation, profil, ListId, ListMaxApprenants,
+            FormationVM formationVm = Mapping.MapToFormationVM(formation, ListId, ListMaxApprenants,
                 ListCategorie, ListExamensTitre);
 
             return formationVm;
         }
 
         // PUT api/Formation/5
+        [HttpPut]
+        [Route("api/Formation/{id}")]
         public IHttpActionResult PutFormation(int id, [FromBody] FormationVM obj)
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
+            }*/
 
             Formation formation = Mapping.MapToFormation(obj);
-            Profil profil = Mapping.MapToProfil(obj);
-            formationService.UpdateFormation(formation, profil, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
+            formationService.UpdateFormation(formation, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
             
             return StatusCode(HttpStatusCode.NoContent);
@@ -116,8 +118,7 @@ namespace PFE.Web.Controllers
             }
 
             Formation formation = Mapping.MapToFormation(obj);
-            Profil profil = Mapping.MapToProfil(obj);
-            formationService.AddFormation(formation, profil, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
+            formationService.AddFormation(formation, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
             return Ok(true);
         }

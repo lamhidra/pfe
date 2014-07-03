@@ -1,79 +1,72 @@
-﻿define(['services/dataservice', 'durandal/system'], function (ds, system) {
+﻿/** 
+ * @module Gestion des formation . 
+           retrieve list of formations and informations related to each one.
+ * @requires system
+ * @requires F_examenDataService
+ * @requires logger
+ */
 
-    //#region variables 
+
+define(["durandal/system", "services/F_examenDataService", "services/logger"],
+    function (system, eds, logger) {
+
     var title = 'Formations';
     var initialized = false;
     var formations = ko.observableArray(),
         toDelete = ko.observableArray();
-   
-    //#endregion
-
-    //#region Main Object 
-
-    var vm = {
-        activate: activate,
-        title: title,
-        formations: formations,
-        refresh: refresh,
-        toDelete: toDelete,
-        check: check,
-        Supprimer: Supprimer,
-        selectAll: selectAll
-    };
-
-    return vm;
-
-    //#endregion
-
-    //#region Internal Methods
-
-    function selectAll() {
-        system.log("selectAll");
-        for (var i = 0; i < formations.length; i++) {
-            toDelete()[i] = formations()[i].FormationID;
-            
-        }
-
-    }
-
-    function Supprimer() {
-        var List = [];
-        if (toDelete().length > 0) {
-            for (var i = 0; i < toDelete().length; i++) {
-                List[i] = toDelete()[i];
-            }
-            toDelete([]);
-            var options = {
-                url: '/api/Formation',
-                type: 'delete',
-                data: { "": List},
-            };
-            $.ajax(options).then(refresh);
-
-        }
-    }
-
-    function check() {
-        for (var i = 0; i < toDelete().length; i++) {
-            system.log(toDelete()[i]);
-        }
-    }
 
     function refresh() {
-        return ds.getFormations(formations);
+        eds.listFormations().done(function (data) {
+            logger.log('Liste des formations', null, title, true);
+            formations([]);
+
+            for (var i = 0; i < data.length; i++) {
+                formations.push(data[i]);
+            }
+            formations.valueHasMutated();
+        });
+    }
+   
+
+    var vm = {
+        
+        title: title,
+        formations: formations,
+        toDelete: toDelete,
+        refresh: refresh,
+
+        /**
+         * 
+         */
+        activate: function () {
+            if (initialized)
+                return;
+            initialized = true;
+            refresh();
+        },
+
+        /**
+         * 
+         */
+        Supprimer: function () {
+            var List = [];
+            if (toDelete().length > 0) {
+                for (var i = 0; i < toDelete().length; i++) {
+                    List[i] = toDelete()[i];
+                }
+                toDelete([]);
+                eds.deleteFormations({ "": List }).done(refresh);
+            }
+        },
+
+        /*selectAll: function () {
+            for (var i = 0; i < formations.length; i++) {
+                toDelete()[i] = formations()[i].FormationID;
+
+            }
+        }*/
     };
 
-    function deleteFormation() {
-        return ds.deleteFormation();
-    }
-
-    function activate() {
-        if (initialized)
-            return;
-        initialized = true;
-        return refresh();
-    }
-    //#endregion
-
+    return vm; 
 
 });

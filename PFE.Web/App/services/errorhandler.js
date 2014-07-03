@@ -14,20 +14,6 @@ define(['services/logger', 'durandal/system', 'services/utils'],
              */
             var ctor = function (targetObject) {
 
-                /** 
-                 * Handle Breeze validation errors
-                 * @method
-                 * @param {object} error - The error object
-                 */
-                this.handleError = function (error) {
-                    if (error.entityErrors) {
-                        error.message = util.getSaveValidationErrorMessage(error);
-                    }
-
-                    logger.logError(error.message, null, system.getModuleId(targetObject), true);
-                    throw error;
-                };
-
                 /**
                  * Log the error
                  * @method
@@ -38,46 +24,7 @@ define(['services/logger', 'durandal/system', 'services/utils'],
                     logger.log(message, null, system.getModuleId(targetObject), showToast);                    
                 };
 
-                /**
-                 * Handle validation errors without Breeze. 
-				 * It´s mandatory to return a ModelState object from server.
-                 * @method
-                 * @param {jQueryXMLHttpRequest} jqXHR
-				 * @param {string} textStatus
-				 * @param {string} error
-                 */
-                this.handlevalidationerrors = function (jqXHR, textStatus, error) {
-					var data,
-						items;
-
-					try {
-						data = $.parseJSON(jqXHR.responseText);
-					}
-					catch (e) {
-						data = null;
-					}					
-
-					if (!data || !data.message) {
-						return;
-					}
-
-					if (data.modelState) {
-						for (var key in data.modelState) {
-							items = data.modelState[key];
-
-							if (items.length) {
-								for (var i = 0; i < items.length; i++) {
-									logger.logError(items[i], null, items, true);
-								}
-							}
-						}
-					}
-
-					if (items.length === 0) {
-						logger.logError(data.message, null, data, true);
-					}
-                };
-
+           
                 /**
                  * Handle authentication errors                 
                  * @method

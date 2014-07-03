@@ -10,8 +10,10 @@ using System.Web.Http.Description;
 
 namespace PFE.Web.Controllers
 {
+     [Authorize(Roles = "Administrateur, Formateur")]
     public class ProfilController : ApiController
     {
+
 
         private readonly IProfilService profilService;
         public ProfilController(IProfilService profilService) {

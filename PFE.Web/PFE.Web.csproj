@@ -249,12 +249,10 @@
     <Content Include="App\main-built.js" />
     <Content Include="App\main.js" />
     <Content Include="App\services\appsecurity.js" />
-    <Content Include="App\services\dataservice.js" />
     <Content Include="App\services\errorhandler.js" />
     <Content Include="App\services\F_examenDataService.js" />
     <Content Include="App\services\Helpers.js" />
     <Content Include="App\services\logger.js" />
-    <Content Include="App\services\profilDataService.js" />
     <Content Include="App\services\routeconfig.js" />
     <Content Include="App\services\utils.js" />
     <Content Include="App\services\validation.js" />
@@ -289,11 +287,9 @@
     <Content Include="App\views\admin\panel.html" />
     <Content Include="App\views\core\GestionDesAnnonces\ListeAnnonces\index.html" />
     <Content Include="App\views\core\GestionDesFormations\AjoutFormation\GestionExamens.html" />
-    <Content Include="App\views\core\GestionDesFormations\AjoutFormation\GestionProfil.html" />
     <Content Include="App\views\core\GestionDesFormations\AjoutFormation\index.html" />
     <Content Include="App\views\core\GestionDesFormations\ListeFormations\index.html" />
     <Content Include="App\views\core\GestionDesFormations\ModifierFormation\F_ModifierExamens.html" />
-    <Content Include="App\views\core\GestionDesFormations\ModifierFormation\F_ModifierProfil.html" />
     <Content Include="App\views\core\GestionDesFormations\ModifierFormation\index.html" />
     <Content Include="App\views\header.html" />
     <Content Include="App\views\home\about.html" />

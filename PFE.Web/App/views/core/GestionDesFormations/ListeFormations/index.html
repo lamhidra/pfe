@@ -1,17 +1,15 @@
-﻿<div class="col-md-6 ">
-    <div class="view">
+﻿<div class="row">
+    <div class="col-md-offset-1 col-sm-6">
         <header>
             <a class="btn btn-info btn-force-refresh pull-right"
-               data-bind="click: refresh" href="#"><span class="glyphicon glyphicon-refresh"></span>Refresh</a>
+               data-bind="click: refresh" href="#"><span class="glyphicon glyphicon-refresh"></span>Actualiser</a>
             <h3 data-bind="text: title"></h3>
             <div>
                 <address data-bind="text: formations().length"></address>
-                <address>found</address>
+                <address>Trouv&eacutes</address>
             </div>
         </header>
-
-        <div class="view">
-
+        <div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="table-responsive">
@@ -31,7 +29,6 @@
                                     <td data-bind="text: Description"></td>
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>

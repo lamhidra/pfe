@@ -1,74 +1,57 @@
 ﻿
-<div class="col-md-6">
-    <h2 data-bind="text: title"></h2>
+<div>
+    <div class="row">
+        <div class="col-md-offset-1 col-sm-6">
+            <h2 data-bind="text: title"></h2>
+            <form>
+                <!--Titre-->
+                <div class="form-group">
+                    <label for="titre" class="control-label">Titre :</label>
+                    <input data-bind="value: titre" type="text" name="titre" class="form-control" />
+                </div>
 
-    <div data-bind="if: MessageError()">
-        <div class="alert alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" data-bind="click: clearMessageError">
-                &times;
-            </button>
-            <strong>Warning!</strong> <p data-bind="html: MessageError()"></p>.
+                <!--Nom Organisme-->
+                <div class="form-group">
+                    <label for="nomOrganisme" class="control-label">Nom Organisme :</label>
+                    <input data-bind="value: nomOrganisme" type="text" name="nomOrganisme" class="form-control" placeholder="e.g emsi" />
+                </div>
+                <!--Description-->
+                <div class="form-group">
+                    <label for="description" class="control-label">Description :</label>
+                    <textarea data-bind="value: description" name="description" class="form-control"></textarea>
+                </div>
+                <!--Date de début-->
+                <div class="form-group">
+                    <label for="dateDebut" class="control-label">date de debut :</label>
+                    <input data-bind="value: dateDebut" type="date" name="dateDebut" class="form-control" />
+                </div>
+                <!--Date de Fin-->
+                <div class="form-group">
+                    <label for="dateFin" class="control-label">date de Fin :</label>
+                    <input data-bind="value: dateFin" type="date" name="dateFin" class="form-control" />
+                </div>
+
+                <div class="btn-group">
+                    <p class="tpbutton btn-toolbar" style="text-align:center">
+                        <button class="btn btn-primary"
+                                data-toggle="modal" data-target="#Gestion">
+                            Ajouter des examens
+                        </button>
+                    </p>
+                </div>
+                <div class="btn-group container">
+                    <p class="tpbutton btn-toolbar" style="text-align:center">
+                        <button type="submit" class="btn btn-primary" data-bind="click: Add">Ajouter</button>
+                        <button type="reset" class="btn btn-default">R&eacuteinitialiser</button>
+                    </p>
+                </div>
+            </form>
+            </div>
         </div>
     </div>
 
-    <form class="panel">
-            <!--Titre-->
-            <div class="form-group">
-                <label for="Titre">Titre :</label>
-                <input data-bind="value: Titre" type="text" name="Titre" class="form-control"/>
-            </div>  
-            
-            <!--Nom Organisme-->
-            <div class="form-group">
-                <label for="nomOrganisme">Nom Organisme :</label>
-                <input data-bind="value: NomOrganisme" type="text" name="nomOrganisme" class="form-control" placeholder="e.g emsi" />
-            </div>
-
-            <!--Description-->
-            <div class="form-group">
-                <label for="Description">Description :</label>
-                <textarea data-bind="value: Description" name="Description" class="form-control" ></textarea>
-            </div>
-
-            <!--Date de début-->
-            <div class="form-group">
-                <label for="DateDebut">date de debut :</label>
-                <input data-bind="value: DateDebut" type="date" name="DateDebut" class="form-control" />
-            </div>
-
-            <!--Date de Fin-->
-        <div class="form-group">
-            <label for="DateFin">date de Fin :</label>
-            <input data-bind="value: DateFin" type="date" name="DateFin" class="form-control" />
-        </div>
-         
-
-            <div class="btn-group">
-                <p class="tpbutton btn-toolbar" style="text-align:center">
-                    <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
-                       data-toggle="modal" data-target="#Gestion">Ajouter des examens</a>
-                    <a class="btn navbar-btn btn-primary btn-success" href="#" target="_texturepack"
-                       data-toggle="modal" data-target="#Profile">Ajouter un Profile</a>
-                </p>
-            </div>
-            <div class="btn-group container">
-                <p class="tpbutton btn-toolbar" style="text-align:center">
-                    <a class="btn navbar-btn btn-primary btn-success" data-bind="click: Add">Ajouter</a>
-                    <a class="btn navbar-btn btn-default btn-danger" href="#ap" target="_texturepack">Annuler</a>
-                </p>
-            </div>
-    </form>
-
-</div>
-
 <!--pop-up Gestion des examens-->
 <div class="modal fade" id="Gestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <!--ko compose: 'GestionDesFormations/AjoutFormation/GestionExamens.html'--><!--/ko-->
-</div>
-
-
-<!--pop-up Gestion de profil-->
-<div class="modal fade" id="Profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <!--ko compose: 'GestionDesFormations/AjoutFormation/GestionProfil.html'--><!--/ko-->
+    <!--ko compose: 'core/GestionDesFormations/AjoutFormation/GestionExamens.html'--><!--/ko-->
 </div>
 

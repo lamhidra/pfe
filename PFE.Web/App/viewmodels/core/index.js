@@ -4,7 +4,7 @@
             moduleId: 'viewmodels',
             fromParent: true
         }).map([
-            { route: 'ListeFormations', moduleId: 'core/GestionDesFormations/ListeFormations/index', title: 'La liste des formations', type: 'formation', nav: true },
+            { route: ['', 'ListeFormations'], moduleId: 'core/GestionDesFormations/ListeFormations/index', title: 'La liste des formations', type: 'formation', nav: true },
             { route: 'AjoutFormation', moduleId: 'core/GestionDesFormations/AjoutFormation/index', title: 'Ajouter une formation', type: 'formation', nav: true },
             { route: 'ModifierFormation', moduleId: 'core/GestionDesFormations/ModifierFormation/index', title: 'Modifier une formation', type: 'formation', nav: true },
             { route: 'ListeAnnonce', moduleId: 'core/GestionDesAnnonces/ListeAnnonces/index', title: 'La liste des annonces', type: 'annonce', nav: true }
