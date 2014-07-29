@@ -15,10 +15,10 @@ namespace PFE.Service.Services
         IEnumerable<Formation> GetFormations();
         Formation GetFormationById(long id);
         void Delete(Formation formation);
-        void UpdateFormation(Formation formation, Profil profil,
+        void UpdateFormation(Formation formation,
             List<long> ListIds, List<int> ListNombreApprenants);
 
-        void AddFormation(Formation formation, Profil profil,
+        void AddFormation(Formation formation,
             List<long> ListIds, List<int> ListNombreApprenants);
         void Save();
     }
@@ -30,17 +30,14 @@ namespace PFE.Service.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IFormationExamenRepository formationExamenRepository;
         private readonly IExamenRepository examenRepository;
-        private readonly IProfilRepository profilRepository;
 
         public FormationService(IFormationRepository formationRespository, IUnitOfWork unitOfWork,
-               IFormationExamenRepository formationExamenRepository, IExamenRepository examenRepository
-               ,IProfilRepository profilRepository) 
+               IFormationExamenRepository formationExamenRepository, IExamenRepository examenRepository) 
         {
             this.formationRespository = formationRespository;
             this.unitOfWork = unitOfWork;
             this.formationExamenRepository = formationExamenRepository;
             this.examenRepository = examenRepository;
-            this.profilRepository = profilRepository;
         }
 
         IEnumerable<Formation> IFormationService.GetFormations()
@@ -56,19 +53,18 @@ namespace PFE.Service.Services
         public void Delete(Formation formation)
         {
             formationExamenRepository.Delete(f => f.FormationID == formation.FormationID);
-            profilRepository.Delete(p => p.FormationID == formation.FormationID);
             formationRespository.Delete(formation);
             Save();
         }
 
-        public void UpdateFormation(Formation formation, Profil profil,
+        public void UpdateFormation(Formation formation,
             List<long> ListIds, List<int> ListNombreApprenants)
         {
             formationRespository.Update(formation);
             Save();
 
 
-            formationExamenRepository.DeleteFormationExamens(f => f.FormationExamenID == formation.FormationID);
+            formationExamenRepository.Delete(f => f.FormationID == formation.FormationID);
             Save();
             if (ListIds != null)
             {
@@ -84,11 +80,9 @@ namespace PFE.Service.Services
 
                 }
             }
-
-            profilRepository.Update(profil);
         }
 
-        public void AddFormation(Formation formation, Profil profil, List<long> ListIds, List<int> ListNombreApprenants) 
+        public void AddFormation(Formation formation, List<long> ListIds, List<int> ListNombreApprenants) 
         {
             formationRespository.Add(formation);
             Save();
@@ -109,10 +103,6 @@ namespace PFE.Service.Services
                 }
             }
 
-            //formationExamenRepository.
-            profil.FormationID = formation.FormationID;
-            profilRepository.Add(profil);
-            Save();
         }
 
         public void Save() 
