@@ -10,7 +10,7 @@
                 </select>
             </div>
             <div>
-                <form data-bind="foreach: data">
+                <form>
 
                     <!--Titre-->
                     <div class="form-group">
@@ -29,12 +29,12 @@
                     </div>
                     <!--Date de début-->
                     <div class="form-group">
-                        <label for="dateDebut" class="control-label">date de debut :</label>
+                        <label for="dateDebut" class="control-label">Date de debut :</label>
                         <input data-bind="value: dateDebut" type="date" name="dateDebut" class="form-control" />
                     </div>
                     <!--Date de Fin-->
                     <div class="form-group">
-                        <label for="dateFin" class="control-label">date de Fin :</label>
+                        <label for="dateFin" class="control-label">Date de Fin :</label>
                         <input data-bind="value: dateFin" type="date" name="dateFin" class="form-control" />
                     </div>
 
@@ -49,7 +49,6 @@
                     <div class="btn-group container">
                         <p class="tpbutton btn-toolbar" style="text-align:center">
                             <button type="submit" class="btn btn-primary" data-bind="click: $root.Modifier" ">Modifier</button>
-                            <button type="reset" class="btn btn-default">R&eacuteinitialiser</button>
                         </p>
                     </div>
                 </form>

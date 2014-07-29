@@ -169,7 +169,7 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 		$(document).on("click", "#sendConfirmationMail", function (event) {
 			sendConfirmationMail()
 			  .then(function (jqXHR, data) {
-			      logger.logSuccess("E-mail envoyé. S'il vous plaît v&eacuterifier votre e-mail et validez votre compte", data, null, true);
+			      logger.logSuccess("E-mail envoyé. S'il vous plaît vérifier votre e-mail et validez votre compte", data, null, true);
 			}).fail(function (jqXHR, error, statusText) {
 				logger.logError(statusText, error, null, true);
 			});

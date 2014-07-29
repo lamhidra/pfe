@@ -105,7 +105,7 @@ namespace PFE.Web.Controllers
 		{
 			if (userId == null || code == null)
 			{
-				ModelState.AddModelError("error", "You need to provide your user id and confirmation code");
+                ModelState.AddModelError("error", "Vous devez fournir votre nom d'utilisateur et le code de confirmation");
 				return BadRequest(ModelState);
 			}
 
@@ -186,7 +186,7 @@ namespace PFE.Web.Controllers
 				var user = await UserManager.FindByEmailAsync(model.Email);
 				if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
 				{
-					ModelState.AddModelError("", "The user either does not exist or is not confirmed.");
+                    ModelState.AddModelError("", "L'utilisateur n'existe pas, ou n'est pas confirmé.");
 					return BadRequest(ModelState);
 				}
 
@@ -224,7 +224,7 @@ namespace PFE.Web.Controllers
 				var user = await UserManager.FindByEmailAsync(model.Email);
 				if (user == null)
 				{
-					ModelState.AddModelError("", "No user found.");
+                    ModelState.AddModelError("", "Aucun utilisateur trouvé.");
 					return BadRequest(ModelState);
 				}
 				IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -379,14 +379,14 @@ namespace PFE.Web.Controllers
 				&& ticket.Properties.ExpiresUtc.HasValue
 				&& ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
 			{
-				return BadRequest("Failed to login to the external provider.");
+                return BadRequest("Impossible de se connecter au fournisseur externe.");
 			}
 
 			ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
 
 			if (externalData == null)
 			{
-				return BadRequest("This external login is already associated with an account.");
+                return BadRequest("Cette connexion externe est déjà associée à un compte.");
 			}
 
 			IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
@@ -607,7 +607,7 @@ namespace PFE.Web.Controllers
 			};
 
 			string body = ViewRenderer.RenderView("~/Views/Mailer/NewAccount.cshtml", notification);
-			await UserManager.SendEmailAsync(user.Id, "DurandalAuth account confirmation", body);
+            await UserManager.SendEmailAsync(user.Id, "DynIt account confirmation", body);
 
 			return Ok();
 		}

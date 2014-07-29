@@ -14,8 +14,7 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
-   // [Authorize(Roles = "Administrateur, Formateur")]
-    [AllowAnonymous]
+    [Authorize]
     public class ExamenController : ApiController
     {
         private readonly IExamenService examenService;

@@ -14,6 +14,8 @@ namespace PFE.Domain
         public string Description { get; set; }
         public string Lien { get; set; }
 
+        public byte[] pdf { get; set; }
+
         public virtual ICollection<Image> Images { get; set; }
     }
 }

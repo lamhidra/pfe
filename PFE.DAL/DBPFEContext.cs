@@ -37,8 +37,6 @@ namespace PFE.DAL
         public DbSet<FormationExamen> FormationExamens { get; set; }
         public DbSet<HistoriqueFormation> HistoriqueFormations { get; set; }
         public DbSet<HistoriqueApprenant> HistoriqueApprenants { get; set; }
-        public DbSet<Profil> Profils { get; set; }
-        public DbSet<Visiteur> Visiteurs { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -59,7 +57,6 @@ namespace PFE.DAL
             modelBuilder.Configurations.Add(new ResultatConfiguration());
             modelBuilder.Configurations.Add(new HistoriqueFormationConfiguration());
             modelBuilder.Configurations.Add(new HistoriqueApprenantConfiguration());
-            modelBuilder.Configurations.Add(new ProfilConfiguration());
 
         }
     }

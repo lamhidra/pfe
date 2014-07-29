@@ -9,37 +9,16 @@ namespace PFE.Web.Core.Helpers.VM
 {
     public class Mapping
     {
-       public static Formation MapToFormation(IFormation obj) 
+       public static void MapToFormation(IFormation obj, Formation formation) 
        {
-           Formation formation = new Formation()
-           {
-                FormationID = obj.FormationID,
-                DateDebut = obj.DateDebut,
-                DateFin = obj.DateFin,
-                Description = obj.Description,
-                Titre = obj.Titre,
-                NomOrganisme = obj.NomOrganisme
-           };
-
-           return formation;
-
+                formation.DateDebut = obj.DateDebut;
+                formation. DateFin = obj.DateFin;
+                formation.Description = obj.Description;
+                formation.Titre = obj.Titre;
+                formation.NomOrganisme = obj.NomOrganisme;
         }
 
-       public static Profil MapToProfil(IProfil obj) 
-       {
-           Profil profil = new Profil()
-           {
-               ProfilID = obj.ProfilID,
-               Login = obj.Login,
-               Password = obj.Password
-
-           };
-
-           return profil;
-       }
-
-
-       public static FormationVM MapToFormationVM(Formation formation, Profil profil, List<long> vListId,
+       public static FormationVM MapToFormationVM(Formation formation, List<long> vListId,
            List<int> vListMaxApprenants, List<int> vListCategorie, List<string> vListExamensTitre)
        {
            FormationVM formationVM = new FormationVM()
@@ -50,9 +29,6 @@ namespace PFE.Web.Core.Helpers.VM
                 NombreMaxApprenants = formation.NombreMaxApprenants,
                 DateDebut = formation.DateDebut,
                 DateFin = formation.DateFin,
-                
-                Login = profil.Login,
-                Password = profil.Password,
 
                 ListId = vListId,
                 ListMaxApprenants = vListMaxApprenants,

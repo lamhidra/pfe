@@ -24,6 +24,7 @@ namespace PFE.Web
                 .Include("~/scripts/Q.js")
                 .Include("~/scripts/moment.js")
                 .Include("~/scripts/zen-form.js")
+                .Include("~/scripts/js/metro/metro.min.js")
               );
 
             bundles.Add(
@@ -36,6 +37,7 @@ namespace PFE.Web
                 .Include("~/Content/Site.css")
                 .Include("~/Content/Stashy.css")
                 .Include("~/Content/zen-form.css")
+                .Include("~/Content/css/metro-bootstrap.css")
            );
 
             bundles.Add(

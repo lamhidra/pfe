@@ -16,22 +16,19 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
-    //[Authorize(Roles = "Administrateur, Formateur")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrateur, Formateur")]
+    //[AllowAnonymous]
     public class FormationController : ApiController
     {
 
         private readonly IFormationService formationService;
-        private readonly IProfilService profilService;
         private readonly IFormationExamenService formationExamenService;
         private readonly IExamenService examenService;
 
-        public FormationController(IFormationService formationService,
-            IProfilService profilService, IFormationExamenService formationExamenService,
+        public FormationController(IFormationService formationService, IFormationExamenService formationExamenService,
             IExamenService examenService)
         {
             this.formationService = formationService;
-            this.profilService = profilService;
             this.formationExamenService = formationExamenService;
             this.examenService = examenService;
         }
@@ -99,7 +96,8 @@ namespace PFE.Web.Controllers
                 return BadRequest(ModelState);
             }*/
 
-            Formation formation = Mapping.MapToFormation(obj);
+            Formation formation = formationService.GetFormationById(id);
+            Mapping.MapToFormation(obj, formation);
             formationService.UpdateFormation(formation, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
             
@@ -117,7 +115,8 @@ namespace PFE.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            Formation formation = Mapping.MapToFormation(obj);
+            Formation formation = new Formation();
+            Mapping.MapToFormation(obj, formation);
             formationService.AddFormation(formation, (List<long>)obj.ListId, (List<int>)obj.ListMaxApprenants);
 
             return Ok(true);

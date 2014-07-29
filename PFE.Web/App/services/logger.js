@@ -113,7 +113,7 @@ define(['durandal/system'],
          * @param {string} message
         */
         function showAccountWarning(restrictedRoute) {
-            var text1 = "Nous vous avons envoy&eacute un message pour confirmer votre compte. Si vous ne le receviez pas de v&eacuterifier votre dossier spam ou <a id='sendConfirmationMail' class='btn btn-danger'>click here</a> afin de le renvoyer",
+            var text1 = "Nous vous avons envoy&eacute un message pour confirmer votre compte. Si vous ne le receviez pas de v&eacuterifier votre dossier spam ou <a id='sendConfirmationMail' class='btn btn-danger'>clique ici</a> afin de le renvoyer",
                 text2 = "L'itin&eacuteraire que vous tentez d'acc&eacuteder est r&eacuteserv&eacute aux comptes confirm&eacutes. V&eacuterifiez votre compte de messagerie pour trouver un courrier nous vous avons envoy&eacute et confirmer. Si vous ne le receviez pas de v&eacuterifier votre dossier spam ou <a id='sendConfirmationMail' class='btn btn-danger'>cliquez ici</a>afin de le renvoyer"
 
             Stashy.Notify({

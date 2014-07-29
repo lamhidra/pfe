@@ -95,7 +95,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 			}).done(function (data) {
 				self.changing(false);
 				reset();
-				logger.logSuccess("Mot de passe modifi&eacute", null, null, true);
+				logger.logSuccess("Mot de passe modifiée", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
 		    .fail(function () {
@@ -129,7 +129,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 			}).done(function (data) {
 			    self.removing(false);
 			    userLogins.remove(self);
-			    logger.logSuccess("Connexion retir&eacute avec succ&egravess", null, null, true);
+			    logger.logSuccess("Connexion retiré avec succée", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
             .fail(function () {
@@ -171,7 +171,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 					loginProvider: localLoginProvider(),
 					providerKey: userName()
 				}, userLogins));
-				logger.logSuccess("Mot de passe r&eacutegl&eacute avec succ&egraves", null, null, true);
+				logger.logSuccess("Mot de passe réglé avec succée", null, null, true);
 			})
             .fail(self.handlevalidationerrors)
 			.fail(function () {
@@ -287,7 +287,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
                                 self.externalLoginProviders.push(new AddExternalLoginProviderViewModel(data.ExternalLoginProviders[i]));
                             }
                         } else {
-                            logger.logError("Erreur de r&eacutecup&eacuteration des informations de compte d'utilisateur", null, null, true);
+                            logger.logError("Erreur de récupération des informations de compte d'utilisateur", null, null, true);
                         }
                         self.loading(false);
                     })
@@ -328,7 +328,7 @@ function (system,appsecurity, errorhandler, logger, utils, app, router) {
 	        var self = this;
 	        system.log("manage: deleteAccount");
 
-	        return app.showMessage("Le compte sera d&eacutefinitivement supprim&eacute", "Etes-vous s&ucircr?", ['Oui', 'Non'])
+	        return app.showMessage("Le compte sera définitivement supprimé", "Etes-vous sûr?", ['Oui', 'Non'])
                         .then(function (option) {
                             if (option === 'Oui') {
                                 appsecurity.deleteAccount()

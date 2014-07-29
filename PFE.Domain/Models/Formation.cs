@@ -25,7 +25,7 @@ namespace PFE.Domain
 
         public virtual ICollection<Apprenant> Apprenants { get; set; }
        
-        public virtual Profil Profil { get; set; }
+       // public virtual Profil Profil { get; set; }
 
     }
 

@@ -18,6 +18,7 @@ namespace TestBlanc.Web.App_Start
     using Microsoft.Owin.Security;
     using PFE.Web;
     using PFE.Web.SEO;
+    using PFE.Service.GeneratePdfService;
 
     public static class NinjectWebCommon 
     {
@@ -80,19 +81,19 @@ namespace TestBlanc.Web.App_Start
             kernel.Bind<IFormationExamenRepository>().To<FormationExamenRepository>();
             kernel.Bind<IExamenRepository>().To<ExamenRepository>();
             kernel.Bind<IApprenantRepository>().To<ApprenantRepository>();
-            kernel.Bind<IProfilRepository>().To<ProfilRepository>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
-
+            kernel.Bind<IAnnonceRepository>().To<AnnonceRepository>();
 
             //Services
             kernel.Bind<IFormationService>().To<FormationService>();
             kernel.Bind<IApprenantService>().To<ApprenantService>();
             kernel.Bind<IExamenService>().To<ExamenService>();
-            kernel.Bind<IProfilService>().To<ProfilService>();
             kernel.Bind<IFormationExamenService>().To<FormationExamenService>();
             kernel.Bind<IUserService>().To<UserService>();
+            kernel.Bind<IAnnonceService>().To<AnnonceService>();
+            kernel.Bind<IToPdfStrategy>().To<ToPdfStrategy>();
 
-            
+
             //Others
             kernel.Bind<ISnapshot>().To<Snapshot>();
         }        

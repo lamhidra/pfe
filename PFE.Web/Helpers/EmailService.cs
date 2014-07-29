@@ -25,7 +25,7 @@ namespace PFE.Web.Helpers
                 mailMsg.To.Add(new MailAddress(message.Destination, ""));
 
                 // From
-                mailMsg.From = new MailAddress("donotreply@durandalauth.com", "DurandalAuth administrator");
+                mailMsg.From = new MailAddress("ayoublamhidra@gmail.com", "administrateur DynIT");
 
                 // Subject and multipart/alternative Body
                 mailMsg.Subject = message.Subject;

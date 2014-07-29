@@ -6,14 +6,6 @@ using System.Web;
 namespace PFE.Web.Core.Helpers.VM
 {
 
-    public interface IProfil
-    {
-        int ProfilID { get; set; }
-
-        string Login { get; set; }
-        string Password { get; set; }
-    }
-
     public interface IFormation
     {
         int FormationID { get; set; }
@@ -41,7 +33,7 @@ namespace PFE.Web.Core.Helpers.VM
         List<string> ListExamensTitre { get; set; }
 
     }
-    public class FormationVM : IProfil, IFormation, IFormationExamen
+    public class FormationVM : IFormation, IFormationExamen
     {
         public FormationVM() { 
         }
@@ -54,9 +46,6 @@ namespace PFE.Web.Core.Helpers.VM
         public int NombreMaxApprenants { get; set; }
         public string NomOrganisme { get; set; }
         public string Titre { get; set; }
-
-        public string Login { get; set; }
-        public string Password { get; set; }
 
         public List<int> ListMaxApprenants { get; set; }
         public List<long> ListId { get; set; }

@@ -52,23 +52,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Administrateur.cs" />
     <Compile Include="Models\Annonce.cs" />
     <Compile Include="Models\Apprenant.cs" />
     <Compile Include="Models\Examen.cs" />
-    <Compile Include="Models\Formateur.cs" />
     <Compile Include="Models\Formation.cs" />
     <Compile Include="Models\FormationExamen.cs" />
     <Compile Include="Models\HistoriqueApprenant.cs" />
     <Compile Include="Models\HistoriqueFormation.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\NiveauExpertise.cs" />
-    <Compile Include="Models\Profil.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Reponse.cs" />
     <Compile Include="Models\Resultat.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Visiteur.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

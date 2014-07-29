@@ -65,10 +65,10 @@ define(['durandal/system','services/validation',
   
     var vm = {
        
-        /** property {object} userInfo - The user object */
+        /** property {object}  -  */
         title: title,
 
-        /** property {object} userInfo - The user object */
+        /** property {object}  -  */
         titre: titre,
 
         /** property {object} userInfo - The user object */
@@ -165,9 +165,11 @@ define(['durandal/system','services/validation',
                     'DateFin': dateFin(),
                     'ListMaxApprenants': listMaxApprenants,
                     'ListId': listExamenIds
-                }).done(eds.querySucceed(titre, nomOrganisme, description, dateDebut,
+                }).done(eds.QuerySucceed(titre, nomOrganisme, description, dateDebut,
                 dateFin, nombreApprenant, listChoix, stockListChoix, listExamen)
-                ).fail(logger.logError("Formation n'a pas été ajouter.", null, null, true));
+                ).fail(function () {
+                    logger.logError("Formation n'a pas été ajouter.", null, null, true)
+                });
             }
             else
                 logger.logError("Le formulaire contient des erreurs.", null, null, true);

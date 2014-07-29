@@ -2,7 +2,31 @@
     , 'services/F_examenDataService', 'services/Helpers'],
     function (logger, system, validation, eds, helpers) {
 
-        var title = 'Modifier une formation';
+        var title = 'Modifier une formation',
+          dateDebut = ko.observable().extend({
+              date: true,
+              required: true
+          }),
+              dateFin = ko.observable().extend({
+                  validation: {
+                      validator: validation.dateValidation, message: 'Date de Fin inferieure du date de debut !.', params: dateDebut
+                  }
+              }),
+            titre = ko.observable().extend({
+                required: true,
+                minLength: 4,
+                maxLength: 20
+            }),
+            nomOrganisme = ko.observable().extend({
+                required: true,
+                minLength: 4,
+                maxLength: 20
+            }),
+            description = ko.observable().extend({
+                required: true,
+                minLength: 4,
+                maxLength: 20
+            });
 
         var selectedCategorie = ko.observable();
             selectedCategorie.extend({ notify: 'always' });
@@ -26,8 +50,7 @@
             listChoix = ko.observableArray(),
             stockListChoix = ko.observableArray(),
             categorie = ['Serveur', 'Desktop', 'Applications', 'BaseDeDonnee', 'Developpeur'],
-            listExamen = ko.observableArray(),
-            data = ko.observableArray();
+            listExamen = ko.observableArray();
 
     //Added for update processing
     var listFormations = ko.observableArray(),
@@ -36,27 +59,23 @@
     selectedFormation.extend({ notify: 'always' });
 
     selectedFormation.subscribe(function (newValue) {
-        data.removeAll();
-        if (!(typeof (newValue) == 'undefined') && (newValue !== "test")) {
+        if (!(typeof (newValue) == 'undefined')) {
             
             eds.getFormation(newValue.id).done(function (formation) {
                 stockListChoix.removeAll();
-            
-                data.push(new ctorFormationInterface(formation.Titre, formation.Description,
+              
+                FormationInterface(formation.Titre, formation.Description,
                     formation.NomOrganisme, helpers.ToDate(formation.DateDebut),
-                    helpers.ToDate(formation.DateFin)));
-
-                data.valueHasMutated();
+                    helpers.ToDate(formation.DateFin));
           
                 for (var i = 0; i < formation.ListId.length; i++) {
-                    eds.fillStockList(stockListChoix,formation.ListMaxApprenants[i], 
+                    eds.FillStockList(stockListChoix,formation.ListMaxApprenants[i], 
                         formation.ListExamensTitre[i], formation.ListId[i], categorie[formation.ListCategorie[i]])
                 }
                 eds.StockList(stockListChoix, listChoix, nombreApprenant);
             });
         } else {
-            data.push(new ctorFormationInterface('', '', '', '', ''));
-            data.valueHasMutated();
+            FormationInterface('', '', '', '', '');
         }
 
     });
@@ -69,13 +88,26 @@
         /** property {object} userInfo - The user object */
         selectedFormation: selectedFormation,
 
-        /** property {object} userInfo - The user object */
-        data: data,
-
         Modifier: Modifier,
         
         /** property {object} userInfo - The user object */
         title: title,
+
+        /** property {object} userInfo - The user object */
+        titre: titre,
+
+        /** property {object} userInfo - The user object */
+        nomOrganisme: nomOrganisme,
+
+        /** property {object} userInfo - The user object */
+        description: description,
+
+        /** property {object} userInfo - The user object */
+        dateDebut: dateDebut,
+
+        /** property {object} userInfo - The user object */
+        dateFin: dateFin,
+
 
         /** property {object} userInfo - The user object */
         categorie: categorie,
@@ -106,6 +138,7 @@
 		 * 
 		 */
         activate: function () {
+            logger.log(title, null, title, true);
             Refresh();
             return true;
         },
@@ -164,19 +197,17 @@
         });
     }
 
-    function ctorFormationInterface(vTitre, vDescription, vNomOrganisme, vDateDebut, vDateFin) {
-        var self = this;
-        self.titre = vTitre;
-        self.description = vDescription;
-        self.nomOrganisme = vNomOrganisme;
-        self.dateDebut = vDateDebut;
-        self.dateFin = vDateFin;
-        return self;
+    function FormationInterface(vTitre, vDescription, vNomOrganisme, vDateDebut, vDateFin) {
+        titre(vTitre);
+        description(vDescription);
+        nomOrganisme(vNomOrganisme);
+        dateDebut(vDateDebut);
+        dateFin(vDateFin);
     }
 
     function Modifier() {
         vm.errors = ko.validation.group(vm);
-        if (vm.errors().length == 0) {
+        if (vm.errors().length == 0 && listFormations().length != 0) {
             var listExamenIds = [];
             var listMaxApprenants = [];
             for (var i = 0; i < listChoix().length; i++) {
@@ -185,20 +216,28 @@
             }
 
             eds.updateFormation({
-                'Titre': data()[0].titre,
-                'NomOrganisme': data()[0].nomOrganisme,
-                'Description': data()[0].description,
-                'DateDebut': data()[0].dateDebut,
-                'DateFin': data()[0].dateFin,
+                'Titre': titre(),
+                'NomOrganisme': nomOrganisme(),
+                'Description': description(),
+                'DateDebut': dateDebut(),
+                'DateFin': dateFin(),
                 'ListMaxApprenants': listMaxApprenants,
                 'ListId': listExamenIds
             }, selectedFormation().id).done(function () {
                 Refresh();
                 logger.logSuccess("Formation modifié avec succes", null, null, true)
-            }).fail(logger.logError("Formation n'a pas été modifier.", null, null, true));
+            }).fail(function (data) {
+                logger.logError("Formation n'a pas été modifier.", null, null, true)
+            });
         }
-        else
-            logger.logError("Le formulaire contient des erreurs.", null, null, true);
+        else {
+            if (listFormations().length == 0)
+            {
+                logger.logError("Aucune formation trouvé.", null, null, true);
+            }else
+               logger.logError("Le formulaire contient des erreurs.", null, null, true);
+
+        }
     }
 
 });

@@ -11,10 +11,6 @@ namespace PFE.Domain
 
         public Apprenant()
         {
-            ApprenantID = 6;
-            Email = "test@test.com";
-            Name = "TestName";
-            Prenom = "TestPrenom";
         }
         public int ApprenantID { get; set; }
         public string Email { get; set; }
