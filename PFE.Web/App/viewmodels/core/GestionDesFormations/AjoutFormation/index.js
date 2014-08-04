@@ -168,7 +168,7 @@ define(['durandal/system','services/validation',
                 }).done(eds.QuerySucceed(titre, nomOrganisme, description, dateDebut,
                 dateFin, nombreApprenant, listChoix, stockListChoix, listExamen)
                 ).fail(function () {
-                    logger.logError("Formation n'a pas été ajouter.", null, null, true)
+                   // logger.logError("Formation n'a pas été ajouter.", null, null, true)
                 });
             }
             else

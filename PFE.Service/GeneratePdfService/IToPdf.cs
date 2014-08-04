@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTextSharp.text;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace PFE.Service.GeneratePdfService
 {
     public interface IToPdf
     {
-        byte[] createPdf(FormationDocument document);
+
+        void createPdf(FormationDocument document, Document pdfDoc);
     }
 }

@@ -92,6 +92,7 @@ namespace TestBlanc.Web.App_Start
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IAnnonceService>().To<AnnonceService>();
             kernel.Bind<IToPdfStrategy>().To<ToPdfStrategy>();
+            kernel.Bind<IToPdfFactory>().To<ToPdfFactory>();
 
 
             //Others

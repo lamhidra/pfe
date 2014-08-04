@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTextSharp.text;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace PFE.Service.GeneratePdfService
 {
     public interface IToPdfStrategy 
     {
-        byte[] createPdf(FormationDocument document);
+        void createPdf(FormationDocument document, Document pdfDoc);
         IToPdf Strategy {  set; }
     }
 
@@ -19,9 +20,9 @@ namespace PFE.Service.GeneratePdfService
 
         public IToPdf Strategy { set { _strategy = value; } }
 
-        public byte[] createPdf(FormationDocument document)
+        public void createPdf(FormationDocument document, Document pdfDoc)
         {
-            return _strategy.createPdf(document);
+             _strategy.createPdf(document, pdfDoc);
         }
     }
 }

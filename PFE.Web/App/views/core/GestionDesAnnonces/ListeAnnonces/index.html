@@ -1,16 +1,39 @@
-﻿
-<div>
-    <form>
-        <div class="form-group">
-            <textarea class=""></textarea>
+﻿<div class="row">
+    <div class="col-md-offset-1 col-sm-6">
+        <header>
+            <a class="btn btn-info btn-force-refresh pull-right"
+               data-bind="click: refresh" href="#"><span class="glyphicon glyphicon-refresh"></span>Actualiser</a>
+            <h3 data-bind="text: title"></h3>
+            <div>
+                <address data-bind="text: listCatalogues().length"></address>
+                <address>Trouv&eacutes</address>
+            </div>
+        </header>
+        <div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th><button data-bind="click: CreateCatalogue">Créer Catalogue</button></th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: listCatalogues">
+                                <tr class='clickableRow'>
+                                    <td><input type="checkbox" data-bind="attr: {value:id } ,checked: $root.checkedTitles" /></td>
+                                    <td data-bind="text: titre"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-
-            <button class="btn btn-primary btn-success">Diffuser</button>
-
-            <span class="btn btn-default btn-file" id="c">
-                Browse <input type="file">
-            </span>
         </div>
-    </form>
+    </div>
 </div>
 
