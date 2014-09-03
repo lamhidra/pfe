@@ -1,4 +1,12 @@
-﻿define(['services/logger'], function (logger) {
+﻿
+/** 
+ * @module Gestion des Catalogues . 
+ * @requires AnnonceServices
+ * @requires logger
+ */
+
+
+define(['services/logger', 'services/AnnonceService'], function (logger, annonceService) {
     var title = 'Annonce';
 
     var listCatalogues = ko.observableArray();
@@ -23,15 +31,7 @@
                     List +="%5B%5D=" + checkedTitles()[i] + (i == (checkedTitles().length - 1) ? "":"&");
                 }
                 checkedTitles([]);
-                window.open("/api/Annonce/Catalogue?"+ List);
-               /* $.ajax("/api/Annonce/Catalogue", {
-                    type: "Get",
-                    cache: false
-                    //data: {"": List}
-                }).done(function (data) {
-
-                    logger.log("Success", null, title, true);
-                });*/
+                annonceService.createCatalogues(List);
             }
         }
     };
@@ -41,10 +41,7 @@
     function refresh() {
         logger.log(title + ' View Activated', null, title, true);
         listCatalogues([]);
-        return $.ajax("/api/Annonce/Headers", {
-            type: "GET",
-            cache: false
-        }).done(function (result) {
+        annonceService.getHeaders().done(function (result) {
             for (Prop in result) {
                 listCatalogues.push(new CatalogueInterface(Prop, result[Prop]));
             }

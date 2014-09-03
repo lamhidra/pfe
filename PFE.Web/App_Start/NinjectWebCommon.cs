@@ -83,6 +83,7 @@ namespace TestBlanc.Web.App_Start
             kernel.Bind<IApprenantRepository>().To<ApprenantRepository>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
             kernel.Bind<IAnnonceRepository>().To<AnnonceRepository>();
+            kernel.Bind<IFicheDescriptiveRepository>().To<FicheDescriptiveRepository>();
 
             //Services
             kernel.Bind<IFormationService>().To<FormationService>();

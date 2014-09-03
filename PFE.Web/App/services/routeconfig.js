@@ -21,15 +21,24 @@ define(function () {
         resendMailRoute: "/api/account/resendconfirmationemail",
         resetPassword: "/api/account/resetpassword",
         deleteaccount: "/api/account/deleteaccount",
+        deleteuseraccount: "/api/account/deleteuseraccount",
+        getroles: "/api/account/getroles",
+        changerole: "/api/account/changerole",
 
         //Formation Routes
-        getExamenCategories: "/api/Examen/Categorie/",
-        getListFormations: "/api/Formation",
-        getFormation: "/api/Formation/",
-        getFormationsTitres: "/api/Formation/FormationsTitres",
-        addFormation: "/api/Formation",
-        deleteFormations: "/api/Formation",
-        updateFormation: "/api/Formation/"
+        getExamenCategories: "/api/examen/categorie/",
+        getListFormations: "/api/formation",
+        getFormation: "/api/formation/",
+        getFormationsTitres: "/api/formation/formationstitres",
+        addFormation: "/api/formation",
+        deleteFormations: "/api/formation",
+        updateFormation: "/api/formation/",
+
+        //Annonce Routes
+        getListAnnonces: "/api/annonce",
+        getFicheDescriptive: "/api/annonce/FicheDescriptive/",
+        createCatalogues: "/api/annonce/catalogue?",
+        getHeaders:  "/api/annonce/Headers"
     };
 
     return routes;

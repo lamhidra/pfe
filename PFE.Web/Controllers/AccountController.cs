@@ -171,6 +171,34 @@ namespace PFE.Web.Controllers
 			return Ok();
 		}
 
+        //Complete
+        [HttpDelete]
+        [Route("DeleteUserAccount/{id}")]
+        public async Task<IHttpActionResult> DeleteUserAccount([FromUri] string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            IdentityResult result = await UserManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+            return Ok(); 
+        }
+
 		/// <summary>
 		/// If the user forget the password this action will send him a reset password mail
 		/// </summary>
@@ -669,13 +697,68 @@ namespace PFE.Web.Controllers
 			return Ok();
 		}
 
+        [HttpPost]
+        [Authorize(Roles = "Administrateur")]
+        [Route("ChangeRole")]
+        public async Task<IHttpActionResult> ChangeRole(ChangeRoleViewModel model) 
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            IdentityResult removeUserFromRole =
+                await UserManager.RemoveFromRoleAsync(user.Id, (UserManager.GetRoles(user.Id))[0]);
+            IdentityResult result = await UserManager.AddToRoleAsync(user.Id, model.Role);
+
+            if (removeUserFromRole.Succeeded && result.Succeeded)
+            {
+                return Ok();
+            }
+
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+            return Ok();
+        }
+
 		[HttpGet]
 		[Authorize(Roles="Administrateur")]
 		public IEnumerable<UserProfileViewModel> GetUsers()
 		{
             var users = userService.getUsers();
-			return users.Select(user => new UserProfileViewModel { UserName = user.UserName }).ToList();
+            if (users == null) 
+            {
+                BadRequest();
+            }
+
+            List<UserProfileViewModel> Profiles = users.Select(user => new UserProfileViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role =  (UserManager.GetRoles(user.Id))[0]
+            }).ToList();
+
+            return Profiles.Where(profile => !profile.Role.Equals("Administrateur"));
 		}
+
+        [HttpGet]
+        [Authorize(Roles = "Administrateur")]
+        [Route("GetRoles")]
+        public IEnumerable<string> GetRoles()
+        {
+            var roles = userService.GetRoles();
+            if (roles == null)
+            {
+                BadRequest();
+            }
+            return roles.Where(role => !role.Equals("Administrateur"));
+        }
 
 		protected override void Dispose(bool disposing)
 		{

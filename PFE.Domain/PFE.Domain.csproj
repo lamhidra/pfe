@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.5.1\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
     <Compile Include="Models\Annonce.cs" />
     <Compile Include="Models\Apprenant.cs" />
     <Compile Include="Models\Examen.cs" />
+    <Compile Include="Models\FicheDescriptive.cs" />
     <Compile Include="Models\Formation.cs" />
     <Compile Include="Models\FormationExamen.cs" />
     <Compile Include="Models\HistoriqueApprenant.cs" />

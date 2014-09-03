@@ -21,7 +21,6 @@ namespace PFE.DAL
         }
 
         public void Commit() {
-           // base.SaveChangesAsync();
             base.SaveChanges();
         }
 
@@ -37,8 +36,8 @@ namespace PFE.DAL
         public DbSet<FormationExamen> FormationExamens { get; set; }
         public DbSet<HistoriqueFormation> HistoriqueFormations { get; set; }
         public DbSet<HistoriqueApprenant> HistoriqueApprenants { get; set; }
-
-
+        public DbSet<FicheDescriptive> FicheDescriptives { get; set; }
+ 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -57,6 +56,7 @@ namespace PFE.DAL
             modelBuilder.Configurations.Add(new ResultatConfiguration());
             modelBuilder.Configurations.Add(new HistoriqueFormationConfiguration());
             modelBuilder.Configurations.Add(new HistoriqueApprenantConfiguration());
+            modelBuilder.Configurations.Add(new FicheDescriptiveConfiguration());
 
         }
     }

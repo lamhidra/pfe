@@ -1,3 +1,15 @@
 ﻿<div id="index">
+    <div data-bind="foreach: data" class="col-lg-offset-1">
+        <article class="col-lg-offset-1">
+            <img data-bind="attr:{src: logo}" />
+
+            <h3><strong><p data-bind="text: titre"></p></strong></h3>
+            <p data-bind="text: description"></p>
+
+            <form data-bind="click: $root.renderPdf(id)">
+                <button type="button" class="btn btn-primary">Fiche Descriptive</button>
+            </form>
+        </article><br /><br />
+    </div>
 
 </div>

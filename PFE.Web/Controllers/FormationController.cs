@@ -16,8 +16,8 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
+   // [RoutePrefix("api/formation")]
     [Authorize(Roles = "Administrateur, Formateur")]
-    //[AllowAnonymous]
     public class FormationController : ApiController
     {
 
@@ -36,14 +36,14 @@ namespace PFE.Web.Controllers
         // GET api/Formation
 
         [HttpGet]
-        [Route("api/Formation")]
+        [Route("api/formation/")]
         public IEnumerable<Formation> GetFormations()
         {
             return formationService.GetFormations();
         }
 
         [HttpGet]
-        [Route("api/Formation/FormationsTitres")]
+        [Route("api/formation/formationsTitres")]
         public IEnumerable<KeyValuePair<int, string>> getFormationsTitres()
         {
 
@@ -61,7 +61,7 @@ namespace PFE.Web.Controllers
 
         // GET api/Formation/5
         [HttpGet]
-        [Route("api/Formation/{id}")]
+        [Route("api/formation/{id}")]
         [ResponseType(typeof(Formation))]
         public FormationVM GetFormation(int id)
         {
@@ -88,7 +88,7 @@ namespace PFE.Web.Controllers
 
         // PUT api/Formation/5
         [HttpPut]
-        [Route("api/Formation/{id}")]
+        [Route("api/formation/{id}")]
         public IHttpActionResult PutFormation(int id, [FromBody] FormationVM obj)
         {
             /*if (!ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace PFE.Web.Controllers
 
         // POST api/Formation
         [HttpPost]
-        [Route("api/Formation")]
+        [Route("api/formation/")]
         //[ResponseType(typeof(Formation))]
         public IHttpActionResult PostFormation([FromBody] FormationVM obj)
         {
@@ -126,7 +126,7 @@ namespace PFE.Web.Controllers
 
         //DELETE api/Formation/5
         [HttpDelete]
-        [Route("api/Formation")]
+        [Route("api/formation/")]
         [ResponseType(typeof(Formation))]
         public IHttpActionResult DeleteFormation([FromBody] List<long> id)
         {

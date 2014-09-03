@@ -249,6 +249,7 @@
   <ItemGroup>
     <Content Include="App\main-built.js" />
     <Content Include="App\main.js" />
+    <Content Include="App\services\AnnonceService.js" />
     <Content Include="App\services\appsecurity.js" />
     <Content Include="App\services\errorhandler.js" />
     <Content Include="App\services\F_examenDataService.js" />
@@ -271,8 +272,6 @@
     <Content Include="App\viewmodels\core\GestionDesFormations\ListeFormations\index.js" />
     <Content Include="App\viewmodels\core\GestionDesFormations\ModifierFormation\index.js" />
     <Content Include="App\viewmodels\header.js" />
-    <Content Include="App\viewmodels\home\about.js" />
-    <Content Include="App\viewmodels\home\help.js" />
     <Content Include="App\viewmodels\home\index.js" />
     <Content Include="App\viewmodels\core\index.js" />
     <Content Include="App\viewmodels\notfound.js" />
@@ -293,8 +292,6 @@
     <Content Include="App\views\core\GestionDesFormations\ModifierFormation\F_ModifierExamens.html" />
     <Content Include="App\views\core\GestionDesFormations\ModifierFormation\index.html" />
     <Content Include="App\views\header.html" />
-    <Content Include="App\views\home\about.html" />
-    <Content Include="App\views\home\help.html" />
     <Content Include="App\views\home\index.html" />
     <Content Include="App\views\core\index.html" />
     <Content Include="App\views\notfound.html" />
@@ -499,7 +496,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\text.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

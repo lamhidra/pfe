@@ -14,6 +14,8 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
+    [AllowAnonymous]
+   // [RoutePrefix("api/apprenant")]
     public class ApprenantController : ApiController
     {
         private readonly IApprenantService apprenantService;
@@ -25,7 +27,7 @@ namespace PFE.Web.Controllers
 
         // GET api/Apprenant
         [HttpGet]
-        [Route("api/Apprenant")]
+        [Route("api/apprenant/")]
         public IEnumerable<Apprenant> GetApprenants()
         {
             return apprenantService.GetALLApprenant();
@@ -33,7 +35,7 @@ namespace PFE.Web.Controllers
 
         // GET api/Apprenant/5
         [HttpGet]
-        [Route("api/Apprenant/{id}")]
+        [Route("api/apprenant/{id}")]
         [ResponseType(typeof(Apprenant))]
         public IHttpActionResult GetApprenant(int id)
         {
@@ -82,7 +84,7 @@ namespace PFE.Web.Controllers
 
         // POST api/Apprenant
         [HttpPost]
-        [Route("api/Apprenant")]
+        [Route("api/apprenant")]
         [ResponseType(typeof(Apprenant))]
         public IHttpActionResult PostApprenant() //Apprenant apprenant
         {
@@ -98,7 +100,7 @@ namespace PFE.Web.Controllers
 
         // DELETE api/Apprenant/5
         [HttpDelete]
-        [Route("api/Apprenant/{id}")]
+        [Route("api/apprenant/{id}")]
         [ResponseType(typeof(Apprenant))]
         public IHttpActionResult DeleteApprenant(int id)
         {

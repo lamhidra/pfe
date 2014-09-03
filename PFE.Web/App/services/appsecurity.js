@@ -342,6 +342,25 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 			});
 		},
 
+
+	    /**
+		 * get Roles
+		 */
+		getRoles: function () {
+		    return $.ajax(routeconfig.getroles, {
+		        type: "GET",
+		        headers : getSecurityHeaders()
+		    });
+		},
+
+		changeRole: function(data) {
+		    return $.ajax(routeconfig.changerole, {
+		        type: "POST",
+		        data: data,
+		        headers: getSecurityHeaders()
+		    });
+		},
+
 		/**
 		 * Login the user
 		 * param {object} data - Login info
@@ -425,7 +444,7 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 		getUsers: function () {
 		    system.log("appsecurity: getUsers");
 			return $.ajax(routeconfig.getUsersUrl, {
-				type: "GET",
+			    type: "GET",
 				headers: getSecurityHeaders()
 			});
 		},
@@ -457,13 +476,24 @@ define(["durandal/system", "durandal/app", "plugins/router", "services/routeconf
 		},
 
 	    /**
-		 * Delete te user account
+		 * Delete the  user account
 		 */
 		deleteAccount: function () {
 		    system.log("appsecurity: deleteAccount");
 		    return $.ajax(routeconfig.deleteaccount, {
                 type : "POST",
 		        cache: false,
+		        headers: getSecurityHeaders()
+		    });
+		},
+
+	    /**
+		 * Delete the current user account
+		 */
+		deleteUserAccount: function (id) {
+		    system.log("appsecurity: deleteUserAccount");
+		    return $.ajax(routeconfig.deleteuseraccount + "/" + id, {
+		        type: "Delete",
 		        headers: getSecurityHeaders()
 		    });
 		},

@@ -4,22 +4,68 @@
             <h1>Admin Panel</h1>
         </div>
         <h4>Consultez la liste des utilisateurs enregistr&egraves sur ce site</h4>
-        <div class="row mart5" data-bind="foreach : userprofiles">
+        <header>
+            <a class="btn btn-info btn-force-refresh pull-right"
+               data-bind="click: refresh" href="#"><span class="glyphicon glyphicon-refresh"></span>Actualiser</a>
+        </header>
+        <div class="row" data-bind="foreach : userprofiles">
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="row">
                     <div class="col-xs-3">
                         <a class="thumbnail">
                             <img src="/Content/icons/icon_user.png" />
                         </a>
+                        <p data-bind="text: username"></p>
                     </div>
-                    <div class="col-xs-9 h-vcenter-parent">
-                        <div class="h-vcenter-child">
-                            <h4 data-bind="text: UserName"></h4>
-                        </div>
+                
+
+                    <div class="col-xs-9">
+                        <label>Roles :</label>
+                        <select data-bind="options: $root.Roles, value:selectedRole" class="form-control"></select>
+
+                        <button class="btn btn-info" data-bind="click: $root.changeRole.bind($data, index, id, selectedRole)">Changer le role</button>
+                            <button class="btn btn-info"
+                                    data-toggle="modal" data-target="#UserInfo" data-bind="click: $root.currentUser.bind($data, index)">
+                               Info
+                            </button>
+                            <button class="btn btn-danger" data-bind="click: $root.deleteCurrentUser.bind($data, id)">Supprimer</button>
                     </div>
+
+                <br />
                 </div>
             </div>
         </div>
         <hr/>
+    </div>
+</div>
+
+<!--pop-up UserInfo-->
+<div class="modal fade" id="UserInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--#region header  -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">User Infos</h4>
+            </div>
+           <div class="container" data-bind="with: currentuserprofile">
+               <p>
+                   <label class="control-label col-lg-4">Nom d'utilisateur</label>
+                   <a data-bind="text: username"></a>               
+               </p>
+               <p>
+                   <label class="control-label col-lg-4">Email :</label>
+                   <a data-bind="text: email"></a>
+               </p>
+               <p>
+                   <label class="control-label col-lg-4">Role :</label>
+                   <a data-bind="text: role"></a>
+               </p>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Fermer</button>
+            </div>
+
+        </div>
     </div>
 </div>

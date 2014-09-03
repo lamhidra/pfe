@@ -12,6 +12,9 @@ namespace PFE.Service.Services
 
     public interface IUserService {
         IEnumerable<ApplicationUser> getUsers();
+
+        string GetRoleById(string id);
+        IEnumerable<string> GetRoles();
         void SaveUser();
     }
 
@@ -19,11 +22,13 @@ namespace PFE.Service.Services
     {
        private readonly IUserRepository userRepository;
        private readonly IUnitOfWork unitOfWork;
+       private readonly IDatabaseFactory databaseFactory;
 
-       public UserService(IUnitOfWork unitOfWork, IUserRepository userRepository)
+       public UserService(IUnitOfWork unitOfWork, IUserRepository userRepository, IDatabaseFactory databaseFactory)
        {
            this.unitOfWork = unitOfWork;
            this.userRepository = userRepository;
+           this.databaseFactory = databaseFactory;
        }
 
         public IEnumerable<ApplicationUser> getUsers()
@@ -31,9 +36,21 @@ namespace PFE.Service.Services
             return userRepository.GetAll();
         }
 
+
+        public IEnumerable<string> GetRoles()
+        {
+            return ((databaseFactory.Get().Roles.Select(role => role.Name)).ToList());
+        }
+
+        public string GetRoleById(string id)
+        {
+            return "";
+        }
+
         public void SaveUser()
         {
             unitOfWork.Commit();
         }
+
     }
 }

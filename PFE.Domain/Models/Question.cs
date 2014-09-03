@@ -10,7 +10,7 @@ namespace PFE.Domain
     {
         public int QuestionID { get; set; }
         public string text { get; set; }
-        public int Point { get; set; }
+        public int Note { get; set; }
         public TypeQuestion TypeQuestion { get; set; }
 
         public int ExamenID { get; set; }

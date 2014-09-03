@@ -14,7 +14,9 @@ using PFE.Service.Services;
 
 namespace PFE.Web.Controllers
 {
+
     [Authorize]
+    //[RoutePrefix("api/examen")]
     public class ExamenController : ApiController
     {
         private readonly IExamenService examenService;
@@ -25,14 +27,14 @@ namespace PFE.Web.Controllers
         }
 
         [HttpGet]
-        [Route("api/Examen")]
+        [Route("api/examen/")]
         public IEnumerable<Examen> GetExamens()
         {
             return examenService.getExamens();
         }
 
         [HttpGet]
-        [Route("api/Examen/Categorie/{value}")]
+        [Route("api/examen/{value}")]
         public IEnumerable<KeyValuePair<int, string>> getExamensParCategorie(int value)
         {
 
